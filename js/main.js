@@ -3,8 +3,7 @@
 document.querySelector('.map').classList.remove('map--faded');
 var mapPins = document.querySelector('.map__pins');
 var pinTemplate = document.querySelector('.map__pin.map__pin--main');
-var pins = [];
-pins.length = 8;
+var pins = new Array(8);
 var PLACE_TYPE = ['palace', 'flat', 'house', 'bungalo'];
 var CHECKIN_TIME = ['12:00', '13:00', '14:00'];
 var CHECKOUT_TIME = ['12:00', '13:00', '14:00'];
