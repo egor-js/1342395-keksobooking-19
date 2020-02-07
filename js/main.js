@@ -37,7 +37,7 @@ var createPins = function () {
       offer: {
         title: 'Название объявления №' + i,
         address: '600, 350',
-        price:  genRandomInt(1000, 60000),
+        price: genRandomInt(1000, 60000),
         type: PLACE_TYPE[genRandomInt(4)],
         rooms: genRandomInt(4),
         guests: genRandomInt(20),
@@ -52,8 +52,8 @@ var createPins = function () {
         y: genRandomInt(200, 655) // диапазон координат по Y "до горизонта" с учётом смещения
       }
     };
-  };
-}
+  }
+};
 
 createPins();
 
