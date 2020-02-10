@@ -135,4 +135,5 @@ fillCardAd(genRandomInt(6)); // хаполняем карточку случай
 
 var map = document.querySelector('.map');
 var beforeElement = map.querySelector('div.map__filters-container');
-beforeElement.before(pinCards);
+map.insertBefore(pinCards, beforeElement);
+// beforeElement.before(pinCards);
