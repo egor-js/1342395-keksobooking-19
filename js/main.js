@@ -14,9 +14,9 @@ var pinCardTemplate = document.querySelector('#card').content;
 // функция генерации случайного положительного целого в заданных пределах, или от 0 до одного значения
 var genRandomInt = function (firstParam, secondParam) {
   if (!secondParam) {
-    return Math.floor(Math.random() * firstParam);
+    return Math.round(Math.random() * firstParam);
   } else {
-    return Math.floor(Math.random() * (secondParam - firstParam) + firstParam);
+    return Math.round(Math.random() * (secondParam - firstParam) + firstParam);
   }
 };
 // генерация массива случайной длинны из ссылок на фотографии объекта аренды
@@ -51,8 +51,8 @@ var createPins = function () {
         type: PLACE_TYPE[genRandomInt(PLACE_TYPE.length)],
         rooms: genRandomInt(1, 4),
         guests: genRandomInt(1, 20),
-        checkin: CHECKIN_TIME[genRandomInt(CHECKIN_TIME.length)],
-        checkout: CHECKOUT_TIME[genRandomInt(CHECKOUT_TIME.length)],
+        checkin: CHECKIN_TIME[genRandomInt(CHECKIN_TIME.length - 1)],
+        checkout: CHECKOUT_TIME[genRandomInt(CHECKOUT_TIME.length - 1)],
         features: genPlaceFeatures(),
         description: 'Описание предложения №' + i,
         photos: genPlacePhotos()
@@ -105,22 +105,37 @@ var insertPhotos = function (template, index) {
   return photosFragment;
 };
 
+var insertFeatures = function (index) {
+  var featuresFragment = document.createDocumentFragment();
+  var featuresFragmentUl = document.createElement('ul');
+  featuresFragmentUl.classList.add('popup__features');
+  for (var i = 0; i < pins[index].offer.features.length; i++) {
+    var featuresFragmentLi = document.createElement('li');
+    var featuresLocal = '';
+    featuresLocal = 'popup__feature--' + pins[index].offer.features[i];
+    featuresFragmentLi.classList.add('popup__feature');
+    featuresFragmentLi.classList.add(featuresLocal);
+    featuresFragmentUl.appendChild(featuresFragmentLi);
+  }
+  featuresFragment.appendChild(featuresFragmentUl);
+  return featuresFragment;
+};
+
 var pinCards = document.createDocumentFragment();
-var pinCardTemp = document.createDocumentFragment();
 
 var fillCardAd = function (index) {
+  var pinCardTemp = document.createDocumentFragment();
   pinCardTemp = pinCardTemplate.cloneNode(true);
   var imgFromTemplate = pinCardTemp.querySelector('.popup__photos').querySelector('img');
   pinCardTemp.querySelector('.popup__title').textContent = pins[index].offer.title;
   pinCardTemp.querySelector('.popup__text--address').textContent = pins[index].offer.address;
-  pinCardTemp.querySelector('.popup__text--price').textContent = pins[index].offer.price + '₽/ночь';
+  pinCardTemp.querySelector('.popup__text--price').innerHTML = pins[index].offer.price + '<span>₽/ночь</span>';
   pinCardTemp.querySelector('.popup__type').textContent = offerTypeTranslate(pins[index].offer.type);
   pinCardTemp.querySelector('.popup__text--capacity').textContent = pins[index].offer.rooms + ' комнаты для ' + pins[index].offer.guests + ' гостей';
   pinCardTemp.querySelector('.popup__text--time').textContent = 'Заезд после ' + pins[index].offer.checkin + ', выезд до ' + pins[index].offer.checkout;
-  pinCardTemp.querySelector('.popup__features').textContent = pins[index].offer.features.join();
+  pinCardTemp.querySelector('.map__card.popup').replaceChild(insertFeatures(index), pinCardTemp.querySelector('.popup__features')); // pins[index].offer.features.join();
   pinCardTemp.querySelector('.popup__description').textContent = pins[index].offer.description;
-  var tempPhotoFragment = insertPhotos(imgFromTemplate, index);
-  pinCardTemp.querySelector('.popup__photos').replaceChild(tempPhotoFragment, imgFromTemplate);
+  pinCardTemp.querySelector('.popup__photos').replaceChild(insertPhotos(imgFromTemplate, index), imgFromTemplate);
   pinCardTemp.querySelector('.popup__avatar').src = pins[index].author.avatar;
   pinCards.appendChild(pinCardTemp);
 };
@@ -136,4 +151,5 @@ fillCardAd(genRandomInt(6)); // хаполняем карточку случай
 var map = document.querySelector('.map');
 var beforeElement = map.querySelector('div.map__filters-container');
 map.insertBefore(pinCards, beforeElement);
+// console.log(pinCards);
 // beforeElement.before(pinCards);
