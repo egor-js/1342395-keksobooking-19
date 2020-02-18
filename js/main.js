@@ -24,9 +24,19 @@ form.address.setAttribute('readonly', '');
 var addressX = buttonStart.getBoundingClientRect().x - mapPins.getBoundingClientRect().x;
 var addressY = buttonStart.getBoundingClientRect().y - mapPins.getBoundingClientRect().y;
 form.address.value = addressX + CORRECTION_START_PIN_X + ', ' + (addressY + CORRECTION_START_PIN_Y);
+form.address.setAttribute('placeholder', addressX + CORRECTION_START_PIN_X + ', ' + (addressY + CORRECTION_START_PIN_Y));
 form.title.setAttribute('maxlength', '100'); // required
 form.title.setAttribute('minlength', '30');
 form.title.setAttribute('required', '');
+form.price.setAttribute('required', '');
+form.price.setAttribute('max', '1000000');
+form.capacity.selectedIndex = 2;
+
+// console.log(pageYOffset);
+// document.onclick = function (e) { // показывает координаты точки клика
+//   addressInput.innerHTML = e.clientX + ':' + e.clientY;
+//   console.log(e);
+// };
 
 
 var fieldsetList = document.querySelector('.ad-form').querySelectorAll('fieldset');
@@ -37,14 +47,6 @@ for (var i = 0; i < fieldsetList.length; i++) {
 for (i = 0; i < filterForm.length; i++) {
   filterForm[i].setAttribute('disabled', '');
 }
-
-
-// console.log(pageYOffset);
-// document.onclick = function (e) { // показывает координаты точки клика
-//   addressInput.innerHTML = e.clientX + ':' + e.clientY;
-//   console.log(e);
-// };
-
 
 function activateMap(evt) {
   if (evt.button === 0 || evt.key === 'Enter') {
@@ -61,15 +63,102 @@ function activateMap(evt) {
       filterForm[i].removeAttribute('disabled', '');
     }
 
-    // buttonStart.removeEventListener('mousedown', activateMap);
-    // buttonStart.removeEventListener('keydown', activateMap);
+    buttonStart.removeEventListener('mousedown', activateMap);
+    buttonStart.removeEventListener('keydown', activateMap);
   }
 }
 
 buttonStart.addEventListener('mousedown', activateMap);
 buttonStart.addEventListener('keydown', activateMap);
-// var pinCardTemplate = document.querySelector('#card').content;
 
+
+form.timein.addEventListener('input', function (evt) {
+  var target = evt.target;
+  form.timeout.value = target.value;
+});
+form.timeout.addEventListener('input', function (evt) {
+  var target = evt.target;
+  form.timein.value = target.value;
+  if (target.value === '14:00') {
+    form.timeout.setCustomValidity('Время выезда' + target.value);
+  } else {
+    form.timeout.setCustomValidity('');
+  }
+});
+
+form.room_number.addEventListener('input', function (evt) {
+  form.capacity.setCustomValidity('');
+  var target = evt.target;
+  switch (target.value) {
+    case '1':
+      if (form.capacity.value !== '1') {
+        target.setCustomValidity(form.capacity.options[form.capacity.selectedIndex].textContent + ' нужно больше комнат');
+      } else {
+        target.setCustomValidity('');
+      }
+      break;
+    case '2':
+      if (form.capacity.value === '2' || form.capacity.value === '1') {
+        target.setCustomValidity('');
+      } else {
+        target.setCustomValidity(form.capacity.options[form.capacity.selectedIndex].textContent + ' нужно больше комнат');
+      }
+      break;
+    case '3':
+      if (form.capacity.value === '0') {
+        target.setCustomValidity(form.capacity.options[form.capacity.selectedIndex].textContent + ' нужно больше комнат');
+      } else {
+        target.setCustomValidity('');
+      }
+      break;
+    case '100':
+      if (form.capacity.value !== '0') {
+        target.setCustomValidity('100 комнат не для гостей');
+      } else {
+        target.setCustomValidity('');
+      }
+      break;
+    default:
+  }
+});
+
+form.capacity.addEventListener('input', function (evt) {
+  form.room_number.setCustomValidity('');
+  var target = evt.target;
+  switch (target.value) {
+    case '1':
+      if (form.room_number.value === '100') {
+        target.setCustomValidity(form.capacity.options[form.capacity.selectedIndex].textContent + ' слишком много комнат =)'); //  form.room_number.options[form.room_number.selectedIndex].textContent + ' не ' + form.capacity.options[form.capacity.selectedIndex].textContent)
+      } else {
+        target.setCustomValidity('');
+      }
+      break;
+    case '2':
+      if (form.room_number.value === '2' || form.room_number.value === '3') {
+        target.setCustomValidity('');
+      } else {
+        target.setCustomValidity('Для 2 гостей нужно 2 или 3 комнаты'); // form.capacity.options[form.capacity.selectedIndex].textContent + ' нужно больше комнат'
+      }
+      break;
+    case '3':
+      if (form.room_number.value !== '3') {
+        target.setCustomValidity('Для 3 гостей нужно 3 комнаты');
+      } else {
+        target.setCustomValidity('');
+      }
+      break;
+    case '0':
+      if (form.room_number.value !== '100') {
+        target.setCustomValidity('Не для гостей нужно 100 комнат');
+      } else {
+        target.setCustomValidity('');
+      }
+      break;
+    default:
+  }
+});
+
+// var pinCardTemplate = document.querySelector('#card').content;
 // функция генерации случайного положительного целого в заданных пределах, или от 0 до одного значения
 var genRandomInt = function (firstParam, secondParam) {
   if (!secondParam) {
@@ -196,7 +285,6 @@ var fillCardAd = function (index) {
   pinCardTemp.querySelector('.popup__description').textContent = pins[index].offer.description;
   pinCardTemp.querySelector('.popup__photos').replaceChild(insertPhotos(imgFromTemplate, index), imgFromTemplate);
   pinCardTemp.querySelector('.popup__avatar').src = pins[index].author.avatar;
-  // pinCards.appendChild(pinCardTemp);
 };
 
 var fragment = document.createDocumentFragment();
@@ -205,7 +293,7 @@ for (var i = 0; i < pins.length; i++) {
 }
 mapPins.appendChild(fragment);
 
-fillCardAd(genRandomInt(6)); // хаполняем карточку случайного объявления
+fillCardAd(genRandomInt(6)); // заполняем карточку случайного объявления
 
 var map = document.querySelector('.map');
 var beforeElement = map.querySelector('div.map__filters-container');
