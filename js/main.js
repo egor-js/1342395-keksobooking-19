@@ -261,8 +261,7 @@ var insertFeatures = function (index) {
     var featuresFragmentLi = document.createElement('li');
     var featuresLocal = '';
     featuresLocal = 'popup__feature--' + pins[index].offer.features[i];
-    featuresFragmentLi.classList.add('popup__feature');
-    featuresFragmentLi.classList.add(featuresLocal);
+    featuresFragmentLi.classList.add('popup__feature', featuresLocal);
     featuresFragmentUl.appendChild(featuresFragmentLi);
   }
   featuresFragment.appendChild(featuresFragmentUl);
