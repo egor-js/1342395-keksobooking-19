@@ -7,6 +7,7 @@
   var CHECKIN_TIME = ['12:00', '13:00', '14:00'];
   var CHECKOUT_TIME = ['12:00', '13:00', '14:00'];
   var mapPins = document.querySelector('.map__pins');
+
   window.data = {
     randomInt: function (firstParam, secondParam) {
       if (!secondParam) {
