@@ -17,12 +17,7 @@ var addressX = buttonStart.getBoundingClientRect().x - mapPins.getBoundingClient
 var addressY = buttonStart.getBoundingClientRect().y - mapPins.getBoundingClientRect().y;
 form.address.value = addressX + CORRECTION_START_PIN_X + ', ' + (addressY + CORRECTION_START_PIN_Y);
 form.address.setAttribute('placeholder', addressX + CORRECTION_START_PIN_X + ', ' + (addressY + CORRECTION_START_PIN_Y));
-form.title.setAttribute('maxlength', '100');
-form.title.setAttribute('minlength', '30');
-form.title.setAttribute('required', '');
-form.price.setAttribute('required', '');
-form.price.setAttribute('max', '1000000');
-form.capacity.selectedIndex = 2;
+
 // функция создания и заполнения свойств объекта аренды
 pins = window.data.createPins();
 var pinCards = document.createDocumentFragment();
@@ -66,5 +61,8 @@ pinCards.appendChild(window.card.fillCardAd(pins[window.data.randomInt(6)])); //
 buttonStart.addEventListener('mousedown', activateMap);
 buttonStart.addEventListener('keydown', activateMap);
 
+document.addEventListener('click', function (evt) {
+  console.log(evt.target);
+});
 
 map.insertBefore(pinCards, beforeElement);
