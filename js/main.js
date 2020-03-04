@@ -17,17 +17,11 @@ var addressX = buttonStart.getBoundingClientRect().x - mapPins.getBoundingClient
 var addressY = buttonStart.getBoundingClientRect().y - mapPins.getBoundingClientRect().y;
 form.address.value = addressX + CORRECTION_START_PIN_X + ', ' + (addressY + CORRECTION_START_PIN_Y);
 form.address.setAttribute('placeholder', addressX + CORRECTION_START_PIN_X + ', ' + (addressY + CORRECTION_START_PIN_Y));
-form.title.setAttribute('maxlength', '100');
-form.title.setAttribute('minlength', '30');
-form.title.setAttribute('required', '');
-form.price.setAttribute('required', '');
-form.price.setAttribute('max', '1000000');
-form.capacity.selectedIndex = 2;
+
 // функция создания и заполнения свойств объекта аренды
 pins = window.data.createPins();
 var pinCards = document.createDocumentFragment();
 var map = document.querySelector('.map');
-var beforeElement = map.querySelector('div.map__filters-container');
 
 var fieldsetList = document.querySelector('.ad-form').querySelectorAll('fieldset');
 for (var i = 0; i < fieldsetList.length; i++) {
@@ -58,13 +52,19 @@ function activateMap(evt) {
       fragment.appendChild(fragPin);
     }
     mapPins.appendChild(fragment);
-    map.removeChild(map.children[1]);
+    // map.removeChild(map.children[1]);
   }
 }
-pinCards.appendChild(window.card.fillCardAd(pins[window.data.randomInt(6)])); // заполняем карточку случайного объявления
+
+// заполняем карточку случайного объявления
+pinCards.appendChild(window.card.fillCardAd(pins[0]));
 
 buttonStart.addEventListener('mousedown', activateMap);
 buttonStart.addEventListener('keydown', activateMap);
 
+// document.addEventListener('click', function (evt) {
+//
+// });
 
-map.insertBefore(pinCards, beforeElement);
+
+document.addEventListener('click', window.card.renderCard);
