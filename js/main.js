@@ -22,7 +22,6 @@ form.address.setAttribute('placeholder', addressX + CORRECTION_START_PIN_X + ', 
 pins = window.data.createPins();
 var pinCards = document.createDocumentFragment();
 var map = document.querySelector('.map');
-var beforeElement = map.querySelector('div.map__filters-container');
 
 var fieldsetList = document.querySelector('.ad-form').querySelectorAll('fieldset');
 for (var i = 0; i < fieldsetList.length; i++) {
@@ -53,16 +52,19 @@ function activateMap(evt) {
       fragment.appendChild(fragPin);
     }
     mapPins.appendChild(fragment);
-    map.removeChild(map.children[1]);
+    // map.removeChild(map.children[1]);
   }
 }
-pinCards.appendChild(window.card.fillCardAd(pins[window.data.randomInt(6)])); // заполняем карточку случайного объявления
+
+// заполняем карточку случайного объявления
+pinCards.appendChild(window.card.fillCardAd(pins[0]));
 
 buttonStart.addEventListener('mousedown', activateMap);
 buttonStart.addEventListener('keydown', activateMap);
 
-document.addEventListener('click', function (evt) {
-  console.log(evt.target);
-});
+// document.addEventListener('click', function (evt) {
+//
+// });
 
-map.insertBefore(pinCards, beforeElement);
+
+document.addEventListener('click', window.card.renderCard);

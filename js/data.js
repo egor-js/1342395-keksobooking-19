@@ -36,6 +36,7 @@
       for (var i = 0; i < pins.length; i++) {
         var avatarImg = 'img/avatars/user0' + (i + 1) + '.png';
         pins[i] = {
+          id: i,
           author: {
             avatar: avatarImg
           },
