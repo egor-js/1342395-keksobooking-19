@@ -52,7 +52,7 @@
         featuresFragmentUl.appendChild(featuresFragmentLi);
       }
       featuresFragment.appendChild(featuresFragmentUl);
-      pinCardTemp.querySelector('.map__card.popup').replaceChild(featuresFragment, pinCardTemp.querySelector('.popup__features')); // pins[index].offer.features.join();
+      pinCardTemp.querySelector('.map__card.popup').replaceChild(featuresFragment, pinCardTemp.querySelector('.popup__features'));
       pinCardTemp.querySelector('.popup__description').textContent = pin.offer.description;
       for (var i = 0; i < pin.offer.photos.length; i++) {
         var tempPhotoFragment = imgFromTemplate.cloneNode(true);
@@ -71,24 +71,19 @@
         if (pinId === null) {
           pinId = parentId;
         }
-        console.log(pinId);
         pinCards.appendChild(window.card.fillCardAd(pins[pinId]));
         if (!cardOpen) {
           map.insertBefore(pinCards, beforeElement);
           cardOpen = 1;
         } else {
           map.removeChild(map.children[1]);
-          // pinCards.appendChild(window.card.fillCardAd(pins[pinId]));
           map.insertBefore(pinCards, beforeElement);
         }
-        // console.log(map);
       } else {
         if (cardOpen) {
           map.removeChild(map.children[1]);
           cardOpen = 0;
         }
-        // map.children[1].setAttribute('hidden', '');
-
       }
 
     }
