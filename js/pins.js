@@ -2,6 +2,7 @@
 
 (function () {
   var pinTemplate = document.querySelector('#pin').content.querySelector('button');
+  var mapPins = document.querySelector('.map__pins');
   var CORRECTION_PIN_X = 25; // смещение по X от точки вставки тега "button" до середины картинки
   var CORRECTION_PIN_Y = 70; // смещение по Y от точки вставки тега "button" до хвостика внизу картинки
   window.renderPin = function (pin) {
@@ -12,4 +13,19 @@
     pinElement.querySelector('img').alt = pin.offer.title;
     return pinElement;
   };
+  window.loadPins = function (pins) {
+    var fragment = document.createDocumentFragment();
+    for (var i = 0; i < pins.length; i++) {
+      pins[i].id = i;
+      var fragPin = window.renderPin(pins[i]);
+      fragment.appendChild(fragPin);
+    }
+    return fragment;
+  };
+  function successHandler(pins) {
+    var fragment = window.loadPins(pins);
+    mapPins.appendChild(fragment);
+    window.dataPins = pins;
+  }
+  window.load(successHandler);
 })();
