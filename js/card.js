@@ -5,9 +5,9 @@
 
   var map = document.querySelector('.map');
   var beforeElement = map.querySelector('div.map__filters-container');
-  var pins = [];
+  // var pins = [];
   var cardOpen = 0;
-  pins = window.data.createPins();
+  // pins = window.data.createPins();
 
   window.card = {
     offerTypeTranslate: function (type) {
@@ -71,7 +71,7 @@
         if (pinId === null) {
           pinId = parentId;
         }
-        pinCards.appendChild(window.card.fillCardAd(pins[pinId]));
+        pinCards.appendChild(window.card.fillCardAd(window.dataPins[pinId]));
         if (!cardOpen) {
           map.insertBefore(pinCards, beforeElement);
           cardOpen = 1;

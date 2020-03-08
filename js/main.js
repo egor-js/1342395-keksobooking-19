@@ -1,6 +1,6 @@
 'use strict';
 
-var pins = [];
+// var pinsMoki = [];
 var mapPins = document.querySelector('.map__pins');
 var CORRECTION_RED_PIN_X = 32.5;
 var CORRECTION_RED_PIN_Y = 80;
@@ -21,7 +21,8 @@ form.address.value = addressX + ', ' + addressY;
 form.address.setAttribute('placeholder', addressX + ', ' + addressY);
 
 // функция создания и заполнения свойств объекта аренды
-pins = window.data.createPins();
+// pinsMoki = window.data.createPins();
+
 // var pinCards = document.createDocumentFragment();
 // var map = document.querySelector('.map');
 
@@ -32,6 +33,7 @@ for (var i = 0; i < fieldsetList.length; i++) {
 for (i = 0; i < filterForm.length; i++) {
   filterForm[i].setAttribute('disabled', '');
 }
+
 
 function activateMap(evt) {
   if (evt.button === 0 || evt.key === 'Enter') {
@@ -48,12 +50,12 @@ function activateMap(evt) {
     buttonStart.removeEventListener('mousedown', activateMap);
     buttonStart.removeEventListener('keydown', activateMap);
 
-    var fragment = document.createDocumentFragment();
-    for (var i = 0; i < pins.length; i++) {
-      var fragPin = window.renderPin(pins[i]);
-      fragment.appendChild(fragPin);
-    }
-    mapPins.appendChild(fragment);
+    // var fragment = document.createDocumentFragment();
+    // for (var i = 0; i < pins.length; i++) {
+    //   var fragPin = window.renderPin(pins[i]);
+    //   fragment.appendChild(fragPin);
+    // }
+    // mapPins.appendChild(fragment);
   }
 }
 buttonStart.addEventListener('mousedown', activateMap);
@@ -95,7 +97,6 @@ function movePin(evt) {
     if (finishCoords.y > MAX_COORD_Y - CORRECTION_RED_PIN_Y) {
       finishCoords.y = MAX_COORD_Y - CORRECTION_RED_PIN_Y;
     }
-    console.log(buttonStart.offsetTop);
     buttonStart.style.top = finishCoords.y + 'px';
     buttonStart.style.left = finishCoords.x + 'px';
 
@@ -113,3 +114,15 @@ function movePin(evt) {
 }
 
 buttonStart.addEventListener('mousedown', movePin);
+
+// var errorHandler = function (errorMessage) {
+//   var node = document.createElement('div');
+//   node.style = 'z-index: 100; margin: 0 auto; text-align: center; background-color: red;';
+//   node.style.position = 'absolute';
+//   node.style.left = 0;
+//   node.style.right = 0;
+//   node.style.fontSize = '30px';
+//
+//   node.textContent = errorMessage;
+//   document.body.insertAdjacentElement('afterbegin', node);
+// };
