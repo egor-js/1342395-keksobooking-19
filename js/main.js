@@ -50,6 +50,9 @@ function activateMap(evt) {
     buttonStart.removeEventListener('mousedown', activateMap);
     buttonStart.removeEventListener('keydown', activateMap);
 
+    var fragment = window.loadPins(window.dataPins);
+    mapPins.appendChild(fragment);
+
     // var fragment = document.createDocumentFragment();
     // for (var i = 0; i < pins.length; i++) {
     //   var fragPin = window.renderPin(pins[i]);

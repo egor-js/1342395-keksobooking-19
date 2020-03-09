@@ -23,8 +23,6 @@
     return fragment;
   };
   function successHandler(pins) {
-    var fragment = window.loadPins(pins);
-    mapPins.appendChild(fragment);
     window.dataPins = pins;
   }
   window.load(successHandler);
