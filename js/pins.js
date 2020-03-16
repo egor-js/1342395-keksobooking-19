@@ -15,7 +15,7 @@
   };
   window.loadPins = function (pins) {
     var fragment = document.createDocumentFragment();
-    for (var i = 0; i < pins.length; i++) {
+    for (var i = 0; i < 5; i++) {
       pins[i].id = i;
       var fragPin = window.renderPin(pins[i]);
       fragment.appendChild(fragPin);

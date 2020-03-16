@@ -67,6 +67,11 @@
       var pinCards = document.createDocumentFragment();
       var pinId = evt.target.getAttribute('pinid');
       var parentId = evt.target.offsetParent.getAttribute('pinid');
+      var closeCardCross = document.querySelector('.popup__close');
+      var popupCard = document.querySelector('.map__card.popup');
+      console.log(evt.target);
+      console.log(evt.target.offsetParent);
+      console.log(popupCard);
       if (pinId || parentId) {
         if (pinId === null) {
           pinId = parentId;
@@ -80,7 +85,7 @@
           map.insertBefore(pinCards, beforeElement);
         }
       } else {
-        if (cardOpen) {
+        if ((evt.target !== popupCard) || (evt.target.offsetParent !== popupCard)) { // cardOpen && evt.target === closeCardCross
           map.removeChild(map.children[1]);
           cardOpen = 0;
         }

@@ -15,8 +15,8 @@ buttonStart.setAttribute('tabindex', '0');
 form.address.setAttribute('readonly', '');
 // console.log(parseInt(buttonStart.style.left));
 // console.log(parseInt(buttonStart.style.top));
-var addressX = buttonStart.getBoundingClientRect().x - mapPins.getBoundingClientRect().x + CORRECTION_RED_PIN_X;
-var addressY = buttonStart.getBoundingClientRect().y - mapPins.getBoundingClientRect().y + CORRECTION_RED_PIN_Y;
+var addressX = buttonStart.getBoundingClientRect().x - mapPins.getBoundingClientRect().x + CORRECTION_START_PIN_X;
+var addressY = buttonStart.getBoundingClientRect().y - mapPins.getBoundingClientRect().y + CORRECTION_START_PIN_Y;
 form.address.value = addressX + ', ' + addressY;
 form.address.setAttribute('placeholder', addressX + ', ' + addressY);
 
