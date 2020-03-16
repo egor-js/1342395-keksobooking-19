@@ -2,14 +2,59 @@
 
 (function () {
   var pinCardTemplate = document.querySelector('#card').content;
-
   var map = document.querySelector('.map');
   var beforeElement = map.querySelector('div.map__filters-container');
-  // var pins = [];
-  var cardOpen = 0;
-  // pins = window.data.createPins();
-
+  var cardOpend = 0;
+  // var pins = window.data.createPins();
   window.card = {
+    close: function () {
+      if (cardOpend) {
+        map.removeChild(map.children[1]);
+        cardOpend = 0;
+      }
+    },
+    renderCard: function (evt) {
+      var pinCards = document.createDocumentFragment();
+      var pinId = evt.target.getAttribute('id');
+      var closeCardCross = document.querySelector('button.popup__close');
+      // var popupCard = document.querySelector('.map__card.popup');
+      var mapOverlay = document.querySelector('.map__overlay');
+      var redPin = document.querySelector('.map__pin.map__pin--main');
+      var filterForm = document.querySelector('.map__filters-container');
+      var mapTitle = document.querySelector('h2.map__title');
+      console.log(evt.target.value);
+      // console.log(evt.target.offsetParent);
+
+      if (cardOpend) {
+        switch (evt.target) {
+          case closeCardCross:
+          case mapOverlay:
+          case redPin:
+          case filterForm:
+          case mapTitle:
+            window.card.close(pinId);
+            // document.querySelector('#' + pinId).classList.remove('.map__pin--active');
+            break;
+          default:
+        }
+        if (pinId) {
+          pinCards.appendChild(window.card.fillCardAd(window.dataPinsOriginal[window.data.getPinIdNumber(pinId)]));
+          // var idForFind = '#' + pinId;
+          // pinTemp; var pinTemp =
+          map.removeChild(map.children[1]);
+          document.querySelector('#' + pinId).classList.add('.map__pin--active');
+          // document.querySelector('#' + pinId).classList.remove('.map__pin--active');
+          map.insertBefore(pinCards, beforeElement);
+        }
+      }
+      if (!cardOpend && pinId) {
+        pinCards.appendChild(window.card.fillCardAd(window.dataPinsOriginal[window.data.getPinIdNumber(pinId)]));
+        map.insertBefore(pinCards, beforeElement);
+        document.querySelector('#' + pinId).classList.add('.map__pin--active');
+        // document.querySelector('#' + pinId).classList.remove('.map__pin--active');
+        cardOpend = 1;
+      }
+    },
     offerTypeTranslate: function (type) {
       switch (type) {
         case 'flat':
@@ -31,7 +76,6 @@
     },
     fillCardAd: function (pin) {
       var pinCardTemp = document.createDocumentFragment();
-      // pinCardTemp.setAttribute('pinid', '-1');
       var photosFragment = document.createDocumentFragment();
       pinCardTemp = pinCardTemplate.cloneNode(true);
       var imgFromTemplate = pinCardTemp.querySelector('.popup__photos').querySelector('img');
@@ -62,35 +106,6 @@
       pinCardTemp.querySelector('.popup__photos').replaceChild(photosFragment, imgFromTemplate);
       pinCardTemp.querySelector('.popup__avatar').src = pin.author.avatar;
       return pinCardTemp;
-    },
-    renderCard: function (evt) {
-      var pinCards = document.createDocumentFragment();
-      var pinId = evt.target.getAttribute('pinid');
-      var parentId = evt.target.offsetParent.getAttribute('pinid');
-      var closeCardCross = document.querySelector('.popup__close');
-      var popupCard = document.querySelector('.map__card.popup');
-      console.log(evt.target);
-      console.log(evt.target.offsetParent);
-      console.log(popupCard);
-      if (pinId || parentId) {
-        if (pinId === null) {
-          pinId = parentId;
-        }
-        pinCards.appendChild(window.card.fillCardAd(window.dataPins[pinId]));
-        if (!cardOpen) {
-          map.insertBefore(pinCards, beforeElement);
-          cardOpen = 1;
-        } else {
-          map.removeChild(map.children[1]);
-          map.insertBefore(pinCards, beforeElement);
-        }
-      } else {
-        if ((evt.target !== popupCard) || (evt.target.offsetParent !== popupCard)) { // cardOpen && evt.target === closeCardCross
-          map.removeChild(map.children[1]);
-          cardOpen = 0;
-        }
-      }
-
     }
   };
 })();
