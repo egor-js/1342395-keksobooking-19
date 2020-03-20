@@ -8,12 +8,12 @@
   var selectRooms = mapFiltersForm.querySelector('#housing-rooms');
   var selectGuests = mapFiltersForm.querySelector('#housing-guests');
   var housingFeaturesFieldset = mapFiltersForm.querySelector('#housing-features');
-  var selectFeatureWiFi = mapFiltersForm.querySelector('#filter-wifi');
-  var selectFeatureDishwasher = mapFiltersForm.querySelector('#filter-dishwasher');
-  var selectFeatureParking = mapFiltersForm.querySelector('#filter-parking');
-  var selectFeatureWasher = mapFiltersForm.querySelector('#filter-washer');
-  var selectFeatureElevator = mapFiltersForm.querySelector('#filter-elevator');
-  var selectFeatureConditioner = mapFiltersForm.querySelector('#filter-conditioner');
+  // var selectFeatureWiFi = mapFiltersForm.querySelector('#filter-wifi');
+  // var selectFeatureDishwasher = mapFiltersForm.querySelector('#filter-dishwasher');
+  // var selectFeatureParking = mapFiltersForm.querySelector('#filter-parking');
+  // var selectFeatureWasher = mapFiltersForm.querySelector('#filter-washer');
+  // var selectFeatureElevator = mapFiltersForm.querySelector('#filter-elevator');
+  // var selectFeatureConditioner = mapFiltersForm.querySelector('#filter-conditioner');
 
   // console.log(housingFeatures.elements[4]);
 
@@ -31,30 +31,14 @@
   window.filter = {
     all: function (pins) {
       pinsFiltfred = window.filter.byfetures(window.filter.byType(window.filter.byPrice(window.filter.byRooms(window.filter.byGuests(pins)))));
-
-      // debugger;
-      // window.filter.byfetures(pinsFiltfred);
-
-      // console.log(selectType.value + ' ' + selectPrce.value + ' ' + selectRooms.value + ' ' + selectFeatureWiFi.checked + ' ' + selectFeatureDishwasher.checked);
       return pinsFiltfred;
     },
     byfetures: function (pins) {
-
-      // console.log(selectFeatureWiFi.checked + ' ' + selectFeatureDishwasher.checked + ' ' + selectFeatureParking.checked + ' ' + selectFeatureWasher.checked + ' ' + selectFeatureElevator.checked + ' ' + selectFeatureConditioner.checked);
       for (var j = 0; j < housingFeaturesFieldset.elements.length; j++) {
         if (housingFeaturesFieldset.elements[j].checked) {
           pinsFiltfred = featuresFind(pins, housingFeaturesFieldset.elements[j].value);
-          // if (featuresFind(pins[i], housingFeaturesFieldset.elements[j].value)) {
-          // //  console.log(pins[i]);
-          // // console.log(housingFeaturesFieldset.elements[j].value + ' is ' + featuresFind(pins[i], housingFeaturesFieldset.elements[j].value));
-          // }
-        } else {
-          continue;
         }
-        // console.log(pins[i]);
-      // console.log(housingFeatures.elements[j].value + ' is ' + featuresFind(pins[i], housingFeatures.elements[j].value));
       }
-      //  console.log(featuresFind(pins[i], 'wifi'));
       return pinsFiltfred;
     },
     byType: function (pins) {
