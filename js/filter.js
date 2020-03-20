@@ -8,14 +8,6 @@
   var selectRooms = mapFiltersForm.querySelector('#housing-rooms');
   var selectGuests = mapFiltersForm.querySelector('#housing-guests');
   var housingFeaturesFieldset = mapFiltersForm.querySelector('#housing-features');
-  // var selectFeatureWiFi = mapFiltersForm.querySelector('#filter-wifi');
-  // var selectFeatureDishwasher = mapFiltersForm.querySelector('#filter-dishwasher');
-  // var selectFeatureParking = mapFiltersForm.querySelector('#filter-parking');
-  // var selectFeatureWasher = mapFiltersForm.querySelector('#filter-washer');
-  // var selectFeatureElevator = mapFiltersForm.querySelector('#filter-elevator');
-  // var selectFeatureConditioner = mapFiltersForm.querySelector('#filter-conditioner');
-
-  // console.log(housingFeatures.elements[4]);
 
   function featuresFind(pins, feature) {
     pinsFiltfred = pins.filter(function (pin) {
@@ -25,7 +17,6 @@
       return featureInc ? true : false;
     });
     return pinsFiltfred;
-    // return featureInc ? true : false; // wifi
   }
 
   window.filter = {
