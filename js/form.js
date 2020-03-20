@@ -51,7 +51,7 @@
     switch (target.value) {
       case '1':
         if (form.room_number.value === '100') {
-          target.setCustomValidity(form.capacity.options[form.capacity.selectedIndex].textContent + ' слишком много комнат =)'); //  form.room_number.options[form.room_number.selectedIndex].textContent + ' не ' + form.capacity.options[form.capacity.selectedIndex].textContent)
+          target.setCustomValidity(form.capacity.options[form.capacity.selectedIndex].textContent + ' слишком много комнат =)');
         } else {
           target.setCustomValidity('');
         }
@@ -60,7 +60,7 @@
         if (form.room_number.value === '2' || form.room_number.value === '3') {
           target.setCustomValidity('');
         } else {
-          target.setCustomValidity('Для 2 гостей нужно 2 или 3 комнаты'); // form.capacity.options[form.capacity.selectedIndex].textContent + ' нужно больше комнат'
+          target.setCustomValidity('Для 2 гостей нужно 2 или 3 комнаты');
         }
         break;
       case '3':

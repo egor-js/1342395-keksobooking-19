@@ -1,6 +1,5 @@
 'use strict';
 
-// var pinsMoki = [];
 var mapPins = document.querySelector('.map__pins');
 var CORRECTION_RED_PIN_X = 32.5;
 var CORRECTION_RED_PIN_Y = 80;
@@ -14,19 +13,11 @@ var buttonStart = document.querySelector('.map__pin.map__pin--main');
 
 buttonStart.setAttribute('tabindex', '0');
 form.address.setAttribute('readonly', '');
-// console.log(parseInt(buttonStart.style.left));
-// console.log(parseInt(buttonStart.style.top));
 var addressX = buttonStart.getBoundingClientRect().x - mapPins.getBoundingClientRect().x + CORRECTION_START_PIN_X;
 var addressY = buttonStart.getBoundingClientRect().y - mapPins.getBoundingClientRect().y + CORRECTION_START_PIN_Y;
 form.address.value = addressX + ', ' + addressY;
 form.address.setAttribute('placeholder', addressX + ', ' + addressY);
 
-// функция создания и заполнения свойств объекта аренды
-// pinsMoki = window.data.createPins();
-
-// var pinCards = document.createDocumentFragment();
-
-// var map = document.querySelector('.map');
 var fieldsetList = document.querySelector('.ad-form').querySelectorAll('fieldset');
 for (var i = 0; i < fieldsetList.length; i++) {
   fieldsetList[i].setAttribute('disabled', '');
@@ -34,7 +25,6 @@ for (var i = 0; i < fieldsetList.length; i++) {
 for (i = 0; i < filterForm.length; i++) {
   filterForm[i].setAttribute('disabled', '');
 }
-
 
 function activateMap(evt) {
   if (evt.button === 0 || evt.key === 'Enter') {
@@ -52,30 +42,13 @@ function activateMap(evt) {
     buttonStart.removeEventListener('keydown', activateMap);
 
     window.renderPins(window.dataPinsOriginal);
-    // var mapFiltersForm = document.querySelector('.map__filters');
-    // console.log(mapFiltersForm);
-    // window.renderPins(window.filter.byPrice(window.filter.byType('house'), 50000));
-    // window.renderPins(window.filter.byPrice(window.filter.byType(window.dataPinsOriginal, 'flat'), 'middle'));
-    // window.renderPins(window.filter.byType(window.dataPinsOriginal, 'flat'));
+
     var mapFiltersForm = document.querySelector('form.map__filters');
-    var selectType = mapFiltersForm.querySelector('#housing-type');
-    mapFiltersForm.addEventListener('input', function (evtFilter) {
-
-      // window.renderPins(window.filter.all(window.dataPinsOriginal));
+    mapFiltersForm.addEventListener('input', function () {
+      window.card.close();
       window.renderPins(window.filter.all(window.dataPinsOriginal));
-      var target = evtFilter.target;
-      // console.log(target);
-      // console.log(selectType.value);
-      // if (target === selectType) {
-      //   window.filter.byType(window.dataPinsOriginal, target.value);
-      //   // window.removePins();
-      // }
-      // window.renderPins(window.filter.byType(window.dataPinsOriginal, target.value));
     });
-
   }
-
-
 }
 
 function doAction(evt) {

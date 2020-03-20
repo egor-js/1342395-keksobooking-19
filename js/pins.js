@@ -12,10 +12,6 @@
     }
   };
   window.renderPins = function (pins) {
-    // console.log(document.querySelectorAll('.map__pin'));
-
-    // console.log(mapPins.childNodes.length);
-    // console.log('pins from window.renderPins', pins);
     window.removePins();
     var fragment = document.createDocumentFragment();
     var l = 0;
@@ -31,7 +27,6 @@
       pinElement.querySelector('img').alt = pins[i].offer.title;
       pinElement.querySelector('img').setAttribute('id', 'pinid' + pins[i].id);
       fragment.appendChild(pinElement);
-      // console.log('pinElement from window.renderPins', pinElement);
     }
     mapPins.appendChild(fragment);
   };
