@@ -7,6 +7,7 @@
   var selectPrce = mapFiltersForm.querySelector('#housing-price');
   var selectRooms = mapFiltersForm.querySelector('#housing-rooms');
   var selectGuests = mapFiltersForm.querySelector('#housing-guests');
+  var housingFeatures = mapFiltersForm.querySelector('#housing-features');
   var selectFeatureWiFi = mapFiltersForm.querySelector('#filter-wifi');
   var selectFeatureDishwasher = mapFiltersForm.querySelector('#filter-dishwasher');
   var selectFeatureParking = mapFiltersForm.querySelector('#filter-parking');
@@ -14,14 +15,43 @@
   var selectFeatureElevator = mapFiltersForm.querySelector('#filter-elevator');
   var selectFeatureConditioner = mapFiltersForm.querySelector('#filter-conditioner');
 
+  // console.log(housingFeatures.elements[4]);
+
+  function featuresFind(pin, feature) {
+    var featureInc = pin.offer.features.find(function (fe) {
+      return fe === feature;
+    });
+    return featureInc ? true : false; // wifi
+  }
+
   window.filter = {
     all: function (pins) {
       pinsFiltfred = window.filter.byType(window.filter.byPrice(window.filter.byRooms(window.filter.byGuests(pins))));
+
+      debugger;
+      window.filter.byfetures(pinsFiltfred);
+
       // console.log(selectType.value + ' ' + selectPrce.value + ' ' + selectRooms.value + ' ' + selectFeatureWiFi.checked + ' ' + selectFeatureDishwasher.checked);
       return pinsFiltfred;
     },
-    byfetures: {
+    byfetures: function (pins) {
 
+      // console.log(selectFeatureWiFi.checked + ' ' + selectFeatureDishwasher.checked + ' ' + selectFeatureParking.checked + ' ' + selectFeatureWasher.checked + ' ' + selectFeatureElevator.checked + ' ' + selectFeatureConditioner.checked);
+      for (var i = 0; i < pins.length; i++) {
+        for (var j = 0; j < housingFeatures.elements.length; j++) {
+          if (housingFeatures.elements[j].checked) {
+            if (featuresFind(pins[i], housingFeatures.elements[j].value)) {
+              console.log(pins[i]);
+              console.log(housingFeatures.elements[j].value + ' is ' + featuresFind(pins[i], housingFeatures.elements[j].value));
+            }
+          } else {
+            continue;
+          }
+          // console.log(pins[i]);
+          // console.log(housingFeatures.elements[j].value + ' is ' + featuresFind(pins[i], housingFeatures.elements[j].value));
+        }
+      //  console.log(featuresFind(pins[i], 'wifi'));
+      }
     },
     byType: function (pins) {
       var param = selectType.value;

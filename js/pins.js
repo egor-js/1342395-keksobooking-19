@@ -22,6 +22,9 @@
     l = pins.length > 5 ? 5 : pins.length;
     for (var i = 0; i < l; i++) {
       var pinElement = pinTemplate.cloneNode(true);
+      if (!pins[i].offer) {
+        continue;
+      }
       pinElement.setAttribute('id', 'pinid' + pins[i].id);
       pinElement.style = ('left: ' + (pins[i].location.x - CORRECTION_PIN_X) + 'px; top: ' + (pins[i].location.y - CORRECTION_PIN_Y) + 'px;');
       pinElement.querySelector('img').src = pins[i].author.avatar;
