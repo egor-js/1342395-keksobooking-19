@@ -9,6 +9,10 @@
   var mapPins = document.querySelector('.map__pins');
 
   window.data = {
+    getPinIdNumber: function (pinidText) {
+      var idNumber = pinidText.replace('pinid', '');
+      return idNumber;
+    },
     randomInt: function (firstParam, secondParam) {
       if (!secondParam) {
         return Math.round(Math.random() * firstParam);

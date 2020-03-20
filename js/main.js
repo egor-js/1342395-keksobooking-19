@@ -11,12 +11,13 @@ var MIN_COORD_Y = 130;
 var form = document.querySelector('form.ad-form');
 var filterForm = document.querySelector('form.map__filters');
 var buttonStart = document.querySelector('.map__pin.map__pin--main');
+
 buttonStart.setAttribute('tabindex', '0');
 form.address.setAttribute('readonly', '');
 // console.log(parseInt(buttonStart.style.left));
 // console.log(parseInt(buttonStart.style.top));
-var addressX = buttonStart.getBoundingClientRect().x - mapPins.getBoundingClientRect().x + CORRECTION_RED_PIN_X;
-var addressY = buttonStart.getBoundingClientRect().y - mapPins.getBoundingClientRect().y + CORRECTION_RED_PIN_Y;
+var addressX = buttonStart.getBoundingClientRect().x - mapPins.getBoundingClientRect().x + CORRECTION_START_PIN_X;
+var addressY = buttonStart.getBoundingClientRect().y - mapPins.getBoundingClientRect().y + CORRECTION_START_PIN_Y;
 form.address.value = addressX + ', ' + addressY;
 form.address.setAttribute('placeholder', addressX + ', ' + addressY);
 
@@ -24,8 +25,8 @@ form.address.setAttribute('placeholder', addressX + ', ' + addressY);
 // pinsMoki = window.data.createPins();
 
 // var pinCards = document.createDocumentFragment();
-// var map = document.querySelector('.map');
 
+// var map = document.querySelector('.map');
 var fieldsetList = document.querySelector('.ad-form').querySelectorAll('fieldset');
 for (var i = 0; i < fieldsetList.length; i++) {
   fieldsetList[i].setAttribute('disabled', '');
@@ -50,6 +51,11 @@ function activateMap(evt) {
     buttonStart.removeEventListener('mousedown', activateMap);
     buttonStart.removeEventListener('keydown', activateMap);
 
+    window.renderPins(window.dataPinsOriginal);
+    var mapFiltersForm = document.querySelector('.map__filters');
+    console.log(mapFiltersForm);
+    // window.renderPins(window.filter.byPrice(window.filter.byType(window.dataPinsOriginal, 'house'), 50000));
+
     // var fragment = document.createDocumentFragment();
     // for (var i = 0; i < pins.length; i++) {
     //   var fragPin = window.renderPin(pins[i]);
@@ -57,10 +63,21 @@ function activateMap(evt) {
     // }
     // mapPins.appendChild(fragment);
   }
+
+
 }
+
+function doAction(evt) {
+  if (evt.key === 'Escape') {
+    window.card.close();
+  }
+}
+
 buttonStart.addEventListener('mousedown', activateMap);
 buttonStart.addEventListener('keydown', activateMap);
+buttonStart.addEventListener('mousedown', movePin);
 document.addEventListener('click', window.card.renderCard);
+document.addEventListener('keydown', doAction);
 
 function movePin(evt) {
   evt.preventDefault();
@@ -112,8 +129,6 @@ function movePin(evt) {
   document.addEventListener('mousemove', onMouseMove);
   document.addEventListener('mouseup', onMouseUp);
 }
-
-buttonStart.addEventListener('mousedown', movePin);
 
 // var errorHandler = function (errorMessage) {
 //   var node = document.createElement('div');
