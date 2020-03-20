@@ -1,35 +1,93 @@
 'use strict';
 
 (function () {
+  var pinsFiltfred = window.dataPinsOriginal;
+  var mapFiltersForm = document.querySelector('form.map__filters');
+  var selectType = mapFiltersForm.querySelector('#housing-type');
+  var selectPrce = mapFiltersForm.querySelector('#housing-price');
+  var selectRooms = mapFiltersForm.querySelector('#housing-rooms');
+  var selectGuests = mapFiltersForm.querySelector('#housing-guests');
+  var selectFeatureWiFi = mapFiltersForm.querySelector('#filter-wifi');
+  var selectFeatureDishwasher = mapFiltersForm.querySelector('#filter-dishwasher');
+  var selectFeatureParking = mapFiltersForm.querySelector('#filter-parking');
+  var selectFeatureWasher = mapFiltersForm.querySelector('#filter-washer');
+  var selectFeatureElevator = mapFiltersForm.querySelector('#filter-elevator');
+  var selectFeatureConditioner = mapFiltersForm.querySelector('#filter-conditioner');
+
   window.filter = {
-    byType: function (pins, param) {
-      var pinsFiltfred = pins.filter(function (pin) {
-        return pin.offer.type === param;
-      });
-      // console.log('pins filtred by type', pinsFiltfred);
-      window.pinsFiltfred = pinsFiltfred;
+    all: function (pins) {
+      pinsFiltfred = window.filter.byType(window.filter.byPrice(window.filter.byRooms(window.filter.byGuests(pins))));
+      // console.log(selectType.value + ' ' + selectPrce.value + ' ' + selectRooms.value + ' ' + selectFeatureWiFi.checked + ' ' + selectFeatureDishwasher.checked);
       return pinsFiltfred;
     },
-    byPrice: function (pins, param) {
+    byfetures: {
+
+    },
+    byType: function (pins) {
+      var param = selectType.value;
+      pinsFiltfred = pins.filter(function (pin) {
+        if (param === 'any') {
+          return true;
+        } else {
+          return pin.offer.type === param;
+        }
+      });
+      window.pinsFiltfred = pinsFiltfred.slice();
+      window.renderPins(pinsFiltfred);
+      return pinsFiltfred;
+    },
+    byPrice: function (pins) {
+      var param = selectPrce.value;
       switch (param) {
-        case 50000:
-          var pinsFiltfred = pins.filter(function (pin) {
-            return pin.offer.price >= 50000;
+        case 'middle':
+          pinsFiltfred = pins.filter(function (pin) {
+            return (pin.offer.price >= 10000) && (pin.offer.price <= 50000);
           });
-          // console.log('pins filtred >= 50 000 ', pinsFiltfred);
-          window.pinsFiltfred = pinsFiltfred;
+          break;
+        case 'low':
+          pinsFiltfred = pins.filter(function (pin) {
+            return pin.offer.price < 10000;
+          });
+          break;
+        case 'high':
+          pinsFiltfred = pins.filter(function (pin) {
+            return pin.offer.price > 50000;
+          });
+          window.pinsFiltfred = pinsFiltfred.slice();
           break;
         default:
+          pinsFiltfred = pins.slice();
+          window.pinsFiltfred = pinsFiltfred.slice();
       }
       return pinsFiltfred;
-    }
+    },
+    byRooms: function (pins) {
+      var param = selectRooms.value;
+      pinsFiltfred = pins.filter(function (pin) {
+        var rooms = pin.offer.rooms + '';
+        if (param === 'any') {
+          return true;
+        } else {
+          return rooms === param;
+        }
+      });
+      return pinsFiltfred;
+    },
+    byGuests: function (pins) {
+      var param = selectGuests.value;
+      pinsFiltfred = pins.filter(function (pin) {
+        var guests = pin.offer.guests + '';
+        if (param === 'any') {
+          return true;
+        } else {
+          return guests === param;
+        }
+      });
+      return pinsFiltfred;
+    },
   };
 })();
 
 (function () {
-  var mapFiltersForm = document.querySelector('.map__filters');
-  mapFiltersForm.addEventListener(function (evt) {
-    var target = evt.target;
-    console.log(target);
-  });
+
 })();

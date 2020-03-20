@@ -52,16 +52,27 @@ function activateMap(evt) {
     buttonStart.removeEventListener('keydown', activateMap);
 
     window.renderPins(window.dataPinsOriginal);
-    var mapFiltersForm = document.querySelector('.map__filters');
-    console.log(mapFiltersForm);
-    // window.renderPins(window.filter.byPrice(window.filter.byType(window.dataPinsOriginal, 'house'), 50000));
+    // var mapFiltersForm = document.querySelector('.map__filters');
+    // console.log(mapFiltersForm);
+    // window.renderPins(window.filter.byPrice(window.filter.byType('house'), 50000));
+    // window.renderPins(window.filter.byPrice(window.filter.byType(window.dataPinsOriginal, 'flat'), 'middle'));
+    // window.renderPins(window.filter.byType(window.dataPinsOriginal, 'flat'));
+    var mapFiltersForm = document.querySelector('form.map__filters');
+    var selectType = mapFiltersForm.querySelector('#housing-type');
+    mapFiltersForm.addEventListener('input', function (evtFilter) {
 
-    // var fragment = document.createDocumentFragment();
-    // for (var i = 0; i < pins.length; i++) {
-    //   var fragPin = window.renderPin(pins[i]);
-    //   fragment.appendChild(fragPin);
-    // }
-    // mapPins.appendChild(fragment);
+      // window.renderPins(window.filter.all(window.dataPinsOriginal));
+      window.renderPins(window.filter.all(window.dataPinsOriginal));
+      var target = evtFilter.target;
+      // console.log(target);
+      // console.log(selectType.value);
+      // if (target === selectType) {
+      //   window.filter.byType(window.dataPinsOriginal, target.value);
+      //   // window.removePins();
+      // }
+      // window.renderPins(window.filter.byType(window.dataPinsOriginal, target.value));
+    });
+
   }
 
 

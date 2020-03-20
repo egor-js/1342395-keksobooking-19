@@ -5,11 +5,18 @@
   var mapPins = document.querySelector('.map__pins');
   var CORRECTION_PIN_X = 25; // смещение по X от точки вставки тега "button" до середины картинки
   var CORRECTION_PIN_Y = 70; // смещение по Y от точки вставки тега "button" до хвостика внизу картинки
-  window.renderPins = function (pins) {
-    // console.log('pins from window.renderPins', pins);
-    for (var i = 2; i < mapPins.children.length; i++) {
-      mapPins.removeChild(mapPins.lastChild);
+  window.removePins = function () {
+    var k = mapPins.childNodes.length;
+    for (var i = 5; i < k; i++) {
+      mapPins.childNodes[5].remove();
     }
+  };
+  window.renderPins = function (pins) {
+    // console.log(document.querySelectorAll('.map__pin'));
+
+    // console.log(mapPins.childNodes.length);
+    // console.log('pins from window.renderPins', pins);
+    window.removePins();
     var fragment = document.createDocumentFragment();
     var l = 0;
     l = pins.length > 5 ? 5 : pins.length;
@@ -24,13 +31,14 @@
       // console.log('pinElement from window.renderPins', pinElement);
     }
     mapPins.appendChild(fragment);
-    console.log(mapPins.children.length);
   };
+
   function successHandler(pins) {
     for (var i = 0; i < pins.length; i++) {
       pins[i].id = i;
     }
     window.dataPinsOriginal = pins;
   }
+
   window.load(successHandler);
 })();
