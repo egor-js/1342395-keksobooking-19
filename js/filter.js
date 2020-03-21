@@ -41,13 +41,17 @@
           return pin.offer.type === param;
         }
       });
-      window.pinsFiltfred = pinsFiltfred.slice();
+      // window.pinsFiltfred = pinsFiltfred.slice();
       window.renderPins(pinsFiltfred);
       return pinsFiltfred;
     },
     byPrice: function (pins) {
       var param = selectPrce.value;
       switch (param) {
+        case 'any':
+          pinsFiltfred = pins.slice();
+          // window.pinsFiltfred = pinsFiltfred.slice();
+          break;
         case 'middle':
           pinsFiltfred = pins.filter(function (pin) {
             return (pin.offer.price >= 10000) && (pin.offer.price <= 50000);
@@ -62,11 +66,11 @@
           pinsFiltfred = pins.filter(function (pin) {
             return pin.offer.price > 50000;
           });
-          window.pinsFiltfred = pinsFiltfred.slice();
+          // window.pinsFiltfred = pinsFiltfred.slice();
           break;
         default:
           pinsFiltfred = pins.slice();
-          window.pinsFiltfred = pinsFiltfred.slice();
+          // window.pinsFiltfred = pinsFiltfred.slice();
       }
       return pinsFiltfred;
     },

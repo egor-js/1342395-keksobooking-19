@@ -15,9 +15,7 @@
   window.renderPins = function (pins) {
     window.removePins();
     var fragment = document.createDocumentFragment();
-    var l = 0;
-    l = pins.length > 5 ? 5 : pins.length;
-    for (var i = 0; i < l; i++) {
+    for (var i = 0; i < Math.min(pins.length, 5); i++) {
       var pinElement = pinTemplate.cloneNode(true);
       if (!pins[i].offer) {
         continue;
@@ -32,24 +30,23 @@
     mapPins.appendChild(fragment);
   };
 
-  function successHandler(pins) {
+  function onSuccess(pins) {
     for (var i = 0; i < pins.length; i++) {
       pins[i].id = i;
     }
     window.dataPinsOriginal = pins;
   }
 
-  // var errorHandler = function (errorMessage) {
-  //   var node = document.createElement('div');
-  //   node.style = 'z-index: 100; margin: 0 auto; text-align: center; background-color: red;';
-  //   node.style.position = 'absolute';
-  //   node.style.left = 0;
-  //   node.style.right = 0;
-  //   node.style.fontSize = '30px';
-  //
-  //   node.textContent = errorMessage;
-  //   document.body.insertAdjacentElement('afterbegin', node);
-  // };
+  var onError = function (errorMessage) {
+    var node = document.createElement('div');
+    node.style = 'z-index: 100; margin: 0 auto; text-align: center; background-color: red;';
+    node.style.position = 'absolute';
+    node.style.left = 0;
+    node.style.right = 0;
+    node.style.fontSize = '30px';
+    node.textContent = errorMessage;
+    document.body.insertAdjacentElement('afterbegin', node);
+  };
 
-  window.load(successHandler);
+  window.load(onSuccess, onError);
 })();
