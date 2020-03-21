@@ -10,15 +10,15 @@ var MIN_COORD_Y = 130;
 var form = document.querySelector('form.ad-form');
 var filterForm = document.querySelector('form.map__filters');
 var buttonStart = document.querySelector('.map__pin.map__pin--main');
+var mapFiltersForm = document.querySelector('form.map__filters');
+var addressX = buttonStart.getBoundingClientRect().x - mapPins.getBoundingClientRect().x + CORRECTION_START_PIN_X;
+var addressY = buttonStart.getBoundingClientRect().y - mapPins.getBoundingClientRect().y + CORRECTION_START_PIN_Y;
+var fieldsetList = document.querySelector('.ad-form').querySelectorAll('fieldset');
 
 buttonStart.setAttribute('tabindex', '0');
 form.address.setAttribute('readonly', '');
-var addressX = buttonStart.getBoundingClientRect().x - mapPins.getBoundingClientRect().x + CORRECTION_START_PIN_X;
-var addressY = buttonStart.getBoundingClientRect().y - mapPins.getBoundingClientRect().y + CORRECTION_START_PIN_Y;
 form.address.value = addressX + ', ' + addressY;
 form.address.setAttribute('placeholder', addressX + ', ' + addressY);
-
-var fieldsetList = document.querySelector('.ad-form').querySelectorAll('fieldset');
 
 for (var i = 0; i < fieldsetList.length; i++) {
   fieldsetList[i].setAttribute('disabled', '');
@@ -43,7 +43,7 @@ function onActivateMap(evt) {
     buttonStart.removeEventListener('keydown', onActivateMap);
 
     window.renderPins(window.dataPinsOriginal);
-    var mapFiltersForm = document.querySelector('form.map__filters');
+
     mapFiltersForm.addEventListener('input', function () {
       window.card.close();
       window.renderPins(window.filter.all(window.dataPinsOriginal));
