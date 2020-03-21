@@ -95,4 +95,5 @@
       return pinsFiltfred;
     },
   };
+
 })();

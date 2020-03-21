@@ -19,6 +19,7 @@ form.address.value = addressX + ', ' + addressY;
 form.address.setAttribute('placeholder', addressX + ', ' + addressY);
 
 var fieldsetList = document.querySelector('.ad-form').querySelectorAll('fieldset');
+
 for (var i = 0; i < fieldsetList.length; i++) {
   fieldsetList[i].setAttribute('disabled', '');
 }

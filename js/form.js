@@ -45,6 +45,7 @@
       default:
     }
   });
+
   form.capacity.addEventListener('input', function (evt) {
     form.room_number.setCustomValidity('');
     var target = evt.target;

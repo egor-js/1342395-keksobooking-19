@@ -12,6 +12,7 @@
         cardOpend = false;
       }
     },
+
     renderCard: function (evt) {
       var pinCards = document.createDocumentFragment();
       var pinId = evt.target.getAttribute('id');

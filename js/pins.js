@@ -11,6 +11,7 @@
       mapPins.childNodes[5].remove();
     }
   };
+
   window.renderPins = function (pins) {
     window.removePins();
     var fragment = document.createDocumentFragment();
