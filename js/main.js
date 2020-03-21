@@ -15,7 +15,6 @@
   var addressX = buttonStart.getBoundingClientRect().x - mapPins.getBoundingClientRect().x + CORRECTION_START_PIN_X;
   var addressY = buttonStart.getBoundingClientRect().y - mapPins.getBoundingClientRect().y + CORRECTION_START_PIN_Y;
   var fieldsetList = document.querySelector('.ad-form').querySelectorAll('fieldset');
-
   buttonStart.setAttribute('tabindex', '0');
   form.address.setAttribute('readonly', '');
   form.address.value = addressX + ', ' + addressY;
