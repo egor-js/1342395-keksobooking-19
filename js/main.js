@@ -26,7 +26,7 @@ for (i = 0; i < filterForm.length; i++) {
   filterForm[i].setAttribute('disabled', '');
 }
 
-function activateMap(evt) {
+function onActivateMap(evt) {
   if (evt.button === 0 || evt.key === 'Enter') {
     document.querySelector('.map').classList.remove('map--faded');
     form.classList.remove('ad-form--disabled');
@@ -38,11 +38,10 @@ function activateMap(evt) {
     for (i = 0; i < filterForm.length; i++) {
       filterForm[i].removeAttribute('disabled', '');
     }
-    buttonStart.removeEventListener('mousedown', activateMap);
-    buttonStart.removeEventListener('keydown', activateMap);
+    buttonStart.removeEventListener('mousedown', onActivateMap);
+    buttonStart.removeEventListener('keydown', onActivateMap);
 
     window.renderPins(window.dataPinsOriginal);
-
     var mapFiltersForm = document.querySelector('form.map__filters');
     mapFiltersForm.addEventListener('input', function () {
       window.card.close();
@@ -50,27 +49,24 @@ function activateMap(evt) {
     });
   }
 }
-
-function doAction(evt) {
+function onDoAction(evt) {
   if (evt.key === 'Escape') {
     window.card.close();
   }
 }
-
-buttonStart.addEventListener('mousedown', activateMap);
-buttonStart.addEventListener('keydown', activateMap);
-buttonStart.addEventListener('mousedown', movePin);
+buttonStart.addEventListener('mousedown', onActivateMap);
+buttonStart.addEventListener('keydown', onActivateMap);
+buttonStart.addEventListener('mousedown', onMovePin);
 document.addEventListener('click', window.card.renderCard);
-document.addEventListener('keydown', doAction);
+document.addEventListener('keydown', onDoAction);
 
-function movePin(evt) {
+function onMovePin(evt) {
   evt.preventDefault();
   if (evt.button === 0) {
     var startCoords = {
       x: evt.clientX,
       y: evt.clientY
     };
-
   }
   function onMouseMove(moveEvt) {
     moveEvt.preventDefault();
@@ -100,7 +96,6 @@ function movePin(evt) {
     }
     buttonStart.style.top = finishCoords.y + 'px';
     buttonStart.style.left = finishCoords.x + 'px';
-
   }
   function onMouseUp(upEvt) {
     upEvt.preventDefault();
@@ -113,15 +108,3 @@ function movePin(evt) {
   document.addEventListener('mousemove', onMouseMove);
   document.addEventListener('mouseup', onMouseUp);
 }
-
-// var errorHandler = function (errorMessage) {
-//   var node = document.createElement('div');
-//   node.style = 'z-index: 100; margin: 0 auto; text-align: center; background-color: red;';
-//   node.style.position = 'absolute';
-//   node.style.left = 0;
-//   node.style.right = 0;
-//   node.style.fontSize = '30px';
-//
-//   node.textContent = errorMessage;
-//   document.body.insertAdjacentElement('afterbegin', node);
-// };

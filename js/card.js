@@ -34,7 +34,6 @@
         }
         if (pinId && pinId.indexOf('pinid') !== -1) {
           pinCards.appendChild(window.card.fillCardAd(window.dataPinsOriginal[window.data.getPinIdNumber(pinId)]));
-
           map.removeChild(map.children[1]);
           document.querySelector('#' + pinId).classList.add('.map__pin--active');
           map.insertBefore(pinCards, beforeElement);
@@ -44,7 +43,7 @@
         pinCards.appendChild(window.card.fillCardAd(window.dataPinsOriginal[window.data.getPinIdNumber(pinId)]));
         map.insertBefore(pinCards, beforeElement);
         document.querySelector('#' + pinId).classList.add('.map__pin--active');
-        cardOpend = false;
+        cardOpend = true;
       }
     },
     offerTypeTranslate: function (type) {
