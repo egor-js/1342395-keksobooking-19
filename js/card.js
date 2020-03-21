@@ -4,26 +4,24 @@
   var pinCardTemplate = document.querySelector('#card').content;
   var map = document.querySelector('.map');
   var beforeElement = map.querySelector('div.map__filters-container');
-  var cardOpend = 0;
-  // var pins = window.data.createPins();
+  var cardOpend = false;
   window.card = {
     close: function () {
       if (cardOpend) {
         map.removeChild(map.children[1]);
-        cardOpend = 0;
+        cardOpend = false;
+        document.querySelector('.map__pin--active').classList.remove('map__pin--active');
       }
     },
+
     renderCard: function (evt) {
       var pinCards = document.createDocumentFragment();
       var pinId = evt.target.getAttribute('id');
       var closeCardCross = document.querySelector('button.popup__close');
-      // var popupCard = document.querySelector('.map__card.popup');
       var mapOverlay = document.querySelector('.map__overlay');
       var redPin = document.querySelector('.map__pin.map__pin--main');
       var filterForm = document.querySelector('.map__filters-container');
       var mapTitle = document.querySelector('h2.map__title');
-      console.log(evt.target.value);
-      // console.log(evt.target.offsetParent);
 
       if (cardOpend) {
         switch (evt.target) {
@@ -32,27 +30,23 @@
           case redPin:
           case filterForm:
           case mapTitle:
-            window.card.close(pinId);
-            // document.querySelector('#' + pinId).classList.remove('.map__pin--active');
+            window.card.close();
             break;
           default:
         }
-        if (pinId) {
+        if (pinId && pinId.indexOf('pinid') !== -1) {
           pinCards.appendChild(window.card.fillCardAd(window.dataPinsOriginal[window.data.getPinIdNumber(pinId)]));
-          // var idForFind = '#' + pinId;
-          // pinTemp; var pinTemp =
           map.removeChild(map.children[1]);
-          document.querySelector('#' + pinId).classList.add('.map__pin--active');
-          // document.querySelector('#' + pinId).classList.remove('.map__pin--active');
+          document.querySelector('.map__pin--active').classList.remove('map__pin--active');
+          document.querySelector('#' + pinId).classList.add('map__pin--active');
           map.insertBefore(pinCards, beforeElement);
         }
       }
-      if (!cardOpend && pinId) {
+      if (!cardOpend && pinId && pinId.indexOf('pinid') !== -1) {
         pinCards.appendChild(window.card.fillCardAd(window.dataPinsOriginal[window.data.getPinIdNumber(pinId)]));
         map.insertBefore(pinCards, beforeElement);
-        document.querySelector('#' + pinId).classList.add('.map__pin--active');
-        // document.querySelector('#' + pinId).classList.remove('.map__pin--active');
-        cardOpend = 1;
+        document.querySelector('#' + pinId).classList.add('map__pin--active');
+        cardOpend = true;
       }
     },
     offerTypeTranslate: function (type) {

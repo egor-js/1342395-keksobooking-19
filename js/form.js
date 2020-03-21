@@ -10,6 +10,15 @@
     var target = evt.target;
     form.timein.value = target.value;
   });
+
+  // function eventHandler(evt) {
+  //   var target = evt.target;
+  //   this.value = target.value;
+  // }
+  //
+  // form.timein.addEventListener('input', eventHandler);
+  // form.timeout.addEventListener('input', eventHandler);
+
   form.room_number.addEventListener('input', function (evt) {
     form.capacity.setCustomValidity('');
     var target = evt.target;
@@ -45,13 +54,14 @@
       default:
     }
   });
+
   form.capacity.addEventListener('input', function (evt) {
     form.room_number.setCustomValidity('');
     var target = evt.target;
     switch (target.value) {
       case '1':
         if (form.room_number.value === '100') {
-          target.setCustomValidity(form.capacity.options[form.capacity.selectedIndex].textContent + ' слишком много комнат =)'); //  form.room_number.options[form.room_number.selectedIndex].textContent + ' не ' + form.capacity.options[form.capacity.selectedIndex].textContent)
+          target.setCustomValidity(form.capacity.options[form.capacity.selectedIndex].textContent + ' слишком много комнат =)');
         } else {
           target.setCustomValidity('');
         }
@@ -60,7 +70,7 @@
         if (form.room_number.value === '2' || form.room_number.value === '3') {
           target.setCustomValidity('');
         } else {
-          target.setCustomValidity('Для 2 гостей нужно 2 или 3 комнаты'); // form.capacity.options[form.capacity.selectedIndex].textContent + ' нужно больше комнат'
+          target.setCustomValidity('Для 2 гостей нужно 2 или 3 комнаты');
         }
         break;
       case '3':

@@ -1,35 +1,80 @@
 'use strict';
 
 (function () {
-  window.filter = {
-    byType: function (pins, param) {
-      var pinsFiltfred = pins.filter(function (pin) {
-        return pin.offer.type === param;
-      });
-      // console.log('pins filtred by type', pinsFiltfred);
-      window.pinsFiltfred = pinsFiltfred;
-      return pinsFiltfred;
+  var mapFiltersForm = document.querySelector('form.map__filters');
+  var housingFeaturesFieldset = mapFiltersForm.querySelector('#housing-features');
+  var filterType = mapFiltersForm.querySelector('#housing-type');
+  var filterPrce = mapFiltersForm.querySelector('#housing-price');
+  var filterRooms = mapFiltersForm.querySelector('#housing-rooms');
+  var filterGuests = mapFiltersForm.querySelector('#housing-guests');
+
+  window.filterFunc = {
+    'any': true,
+    'housing-type': function (pin) {
+      return pin.offer.type === filterType.value;
     },
-    byPrice: function (pins, param) {
+    'housing-price': function (pin) {
+      var param = filterPrce.value;
+      var price = pin.offer.price;
       switch (param) {
-        case 50000:
-          var pinsFiltfred = pins.filter(function (pin) {
-            return pin.offer.price >= 50000;
-          });
-          // console.log('pins filtred >= 50 000 ', pinsFiltfred);
-          window.pinsFiltfred = pinsFiltfred;
-          break;
+        case 'middle':
+          return price >= 10000 && price <= 50000;
+        case 'low':
+          return price < 10000;
+        case 'high':
+          return price > 50000;
         default:
+          throw new Error('Неизвестное значение фильтра по стоимости:' + param);
       }
-      return pinsFiltfred;
+    },
+    'housing-rooms': function (pin) {
+      return pin.offer.rooms === parseInt(filterRooms.value, 10);
+    },
+    'housing-guests': function (pin) {
+      return pin.offer.guests === parseInt(filterGuests.value, 10);
+    },
+    'wifi': function (pin) {
+      return pin.offer.features.includes('wifi');
+    },
+    'dishwasher': function (pin) {
+      return pin.offer.features.includes('dishwasher');
+    },
+    'parking': function (pin) {
+      return pin.offer.features.includes('parking');
+    },
+    'washer': function (pin) {
+      return pin.offer.features.includes('washer');
+    },
+    'elevator': function (pin) {
+      return pin.offer.features.includes('elevator');
+    },
+    'conditioner': function (pin) {
+      return pin.offer.features.includes('conditioner');
     }
   };
-})();
-
-(function () {
-  var mapFiltersForm = document.querySelector('.map__filters');
-  mapFiltersForm.addEventListener(function (evt) {
-    var target = evt.target;
-    console.log(target);
-  });
+  window.filter = {
+    all: function (pins) {
+      var filters = [];
+      var pinsFiltred = [];
+      for (var i = 0; i < 4; i++) {
+        if (mapFiltersForm.elements[i].value && mapFiltersForm.elements[i].value !== 'any') {
+          filters.push(mapFiltersForm.elements[i].name);
+        }
+      }
+      for (var i = 0; i < housingFeaturesFieldset.elements.length; i++) {
+        if (housingFeaturesFieldset.elements[i].checked) {
+          filters.push(housingFeaturesFieldset.elements[i].value);
+        }
+      }
+      for (var i = 0; i < pins.length; i++) {
+        var result = filters.every(function (filter) {
+          return window.filterFunc[filter](pins[i]);
+        });
+        if (result) {
+          pinsFiltred.push(pins[i]);
+        }
+      }
+      return pinsFiltred;
+    },
+  };
 })();
