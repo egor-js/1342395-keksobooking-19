@@ -10,6 +10,15 @@
     var target = evt.target;
     form.timein.value = target.value;
   });
+
+  // function eventHandler(evt) {
+  //   var target = evt.target;
+  //   this.value = target.value;
+  // }
+  //
+  // form.timein.addEventListener('input', eventHandler);
+  // form.timeout.addEventListener('input', eventHandler);
+
   form.room_number.addEventListener('input', function (evt) {
     form.capacity.setCustomValidity('');
     var target = evt.target;

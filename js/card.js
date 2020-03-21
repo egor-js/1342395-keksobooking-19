@@ -10,6 +10,7 @@
       if (cardOpend) {
         map.removeChild(map.children[1]);
         cardOpend = false;
+        document.querySelector('.map__pin--active').classList.remove('map__pin--active');
       }
     },
 
@@ -36,14 +37,15 @@
         if (pinId && pinId.indexOf('pinid') !== -1) {
           pinCards.appendChild(window.card.fillCardAd(window.dataPinsOriginal[window.data.getPinIdNumber(pinId)]));
           map.removeChild(map.children[1]);
-          document.querySelector('#' + pinId).classList.add('.map__pin--active');
+          document.querySelector('.map__pin--active').classList.remove('map__pin--active');
+          document.querySelector('#' + pinId).classList.add('map__pin--active');
           map.insertBefore(pinCards, beforeElement);
         }
       }
       if (!cardOpend && pinId && pinId.indexOf('pinid') !== -1) {
         pinCards.appendChild(window.card.fillCardAd(window.dataPinsOriginal[window.data.getPinIdNumber(pinId)]));
         map.insertBefore(pinCards, beforeElement);
-        document.querySelector('#' + pinId).classList.add('.map__pin--active');
+        document.querySelector('#' + pinId).classList.add('map__pin--active');
         cardOpend = true;
       }
     },
