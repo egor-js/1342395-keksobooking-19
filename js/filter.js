@@ -55,8 +55,7 @@
   window.filter = {
     all: function (pins) {
       var filters = [];
-      var filtersPassed = false;
-      var pinsFiltredNew = [];
+      var pinsFiltred = [];
       for (var i = 0; i < 4; i++) {
         if (mapFiltersForm.elements[i].value && mapFiltersForm.elements[i].value !== 'any') {
           filters.push(mapFiltersForm.elements[i].name);
@@ -68,21 +67,14 @@
         }
       }
       for (var i = 0; i < pins.length; i++) {
-        var filtersTry = [];
-        for (var j = 0; j < filters.length; j++) {
-          filtersTry.push(window.filterFunc[filters[j]](pins[i]));
-        }
-        filtersPassed = filtersTry.every(function (element) {
-          return element === true;
+        var result = filters.every(function (filter) {
+          return window.filterFunc[filter](pins[i]);
         });
-        if (filtersPassed) {
-          pinsFiltredNew.push(pins[i]);
-        }
-        if (pinsFiltredNew.length === 5) {
-          break;
+        if (result) {
+          pinsFiltred.push(pins[i]);
         }
       }
-      return pinsFiltredNew;
+      return pinsFiltred;
     },
   };
 })();
