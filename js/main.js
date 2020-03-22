@@ -12,17 +12,18 @@
   var map = document.querySelector('.map');
   var mapPins = document.querySelector('.map__pins');
   var form = document.querySelector('form.ad-form');
-  var filterForm = document.querySelector('form.map__filters');
+  var resetButton = form.querySelector('.ad-form__reset');
   var buttonStart = document.querySelector('.map__pin.map__pin--main');
   var mapFiltersForm = document.querySelector('form.map__filters');
   var addressX = 0;
   var addressY = 0;
-  var fieldsetList = document.querySelector('.ad-form').querySelectorAll('fieldset');
 
   window.main = {
     setPageInactive: function () {
 
       window.pins.removePins();
+      form.reset();
+      window.scrollTo(0, 0);
       map.classList.add('map--faded');
       form.classList.add('ad-form--disabled');
       form.address.setAttribute('readonly', '');
@@ -35,12 +36,12 @@
       form.address.setAttribute('placeholder', addressX + ', ' + addressY);
       buttonStart.addEventListener('mousedown', onActivateMap);
       buttonStart.addEventListener('keydown', onActivateMap);
-      for (var i = 0; i < fieldsetList.length; i++) {
-        fieldsetList[i].setAttribute('disabled', '');
-      }
-      for (i = 0; i < filterForm.length; i++) {
-        filterForm[i].setAttribute('disabled', '');
-      }
+      window.form.setFormInactive();
+      window.filter.setFiltersInactive();
+      // for (i = 0; i < filterForm.length; i++) {
+      //   filterForm[i].setAttribute('disabled', '');
+      // }
+
       window.filter.reset();
       window.load.download(onSuccess, onError);
     }
@@ -53,24 +54,25 @@
       form.classList.remove('ad-form--disabled');
       form.address.value = addressX + ', ' + addressY;
 
-      for (var i = 0; i < fieldsetList.length; i++) {
-        fieldsetList[i].removeAttribute('disabled', '');
-      }
-      for (i = 0; i < filterForm.length; i++) {
-        filterForm[i].removeAttribute('disabled', '');
-      }
+      // for (var i = 0; i < fieldsetList.length; i++) {
+      //   fieldsetList[i].removeAttribute('disabled', '');
+      // }
+      window.form.setFormActive();
+      window.filter.setFiltersActive();
+      // for (i = 0; i < filterForm.length; i++) {
+      //   filterForm[i].removeAttribute('disabled', '');
+      // }
       buttonStart.removeEventListener('mousedown', onActivateMap);
       buttonStart.removeEventListener('keydown', onActivateMap);
       if (window.downloadSuccess) {
         window.pins.renderPins(window.dataPinsOriginal);
-      } else {
-        console.log('window.downloadSuccess ' + window.downloadSuccess);
       }
 
       mapFiltersForm.addEventListener('input', function () {
         window.card.close();
         window.data.debounce(window.pins.renderPins(window.filter.all(window.dataPinsOriginal)));
       });
+      resetButton.addEventListener('click', window.main.setPageInactive);
     }
   }
   function onCloseCardByEscape(evt) {
@@ -88,24 +90,11 @@
 
     }
   }
-  function onCloseSuccessUploadMessage() {
-    map.removeChild(map.querySelector('.success'));
-    window.main.setPageInactive();
-    form.reset();
-    window.scrollTo(0, 0);
-    successUploadMessage.removeEventListener('click', onCloseSuccessUploadMessage);
-  }
 
-  function onCloseFailUploadMessage() {
-    main.removeChild(main.querySelector('.error'));
-    successUploadMessage.removeEventListener('click', onCloseSuccessUploadMessage);
-  }
 
   buttonStart.addEventListener('mousedown', onMovePin);
   document.addEventListener('click', window.card.renderCard);
   document.addEventListener('keydown', onCloseCardByEscape);
-
-
 
   function onMovePin(evt) {
     evt.preventDefault();
@@ -161,7 +150,6 @@
       pins[i].id = i;
     }
     window.dataPinsOriginal = pins;
-    // window.load.downloadSuccess = true;
   }
 
   function onError(errorMessage) {
@@ -175,23 +163,43 @@
     document.body.insertAdjacentElement('afterbegin', node);
   }
 
+  function onCloseSuccessUploadMessage() {
+    map.removeChild(map.querySelector('.success'));
+    window.main.setPageInactive();
+    // form.reset();
+    window.scrollTo(0, 0);
+    successUploadMessage.removeEventListener('click', onCloseSuccessUploadMessage);
+  }
+
+  function onCloseFailUploadMessage() {
+    main.removeChild(main.querySelector('.error'));
+    successUploadMessage.removeEventListener('click', onCloseSuccessUploadMessage);
+  }
+
   var successUploadMessage = document.querySelector('#success').content.querySelector('.success');
   var failUploadMessage = document.querySelector('#error').content.querySelector('.error');
 
-  function onSuccessDownload(response) {
+  function onRetryUpload() {
+    window.load.upload(new FormData(form), onSuccessUpload, onFailUpload);
+    removeEventListener('click', onRetryUpload);
+  }
+
+  function onSuccessUpload(response) {
     map.insertBefore(successUploadMessage, mapPins);
     successUploadMessage.addEventListener('click', onCloseSuccessUploadMessage);
-    console.log(response);
+    // console.log(response);
   }
-  function onFailDownload(message) {
+  function onFailUpload(message) {
     main.insertBefore(failUploadMessage, mainDiv);
+    var errorButton = main.querySelector('.error__button');
     console.log(message);
+    errorButton.addEventListener('click', onRetryUpload);
     failUploadMessage.addEventListener('click', onCloseFailUploadMessage);
   }
 
   form.addEventListener('submit', function (evt) {
     evt.preventDefault();
-    window.load.upload(new FormData(form), onSuccessDownload, onFailDownload);
+    window.load.upload(new FormData(form), onSuccessUpload, onFailUpload);
   });
 
 })();

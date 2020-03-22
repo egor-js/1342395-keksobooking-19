@@ -6,7 +6,7 @@
   var StatusCode = {
     OK: 200
   };
-  var TIMEOUT_IN_MS = 500;
+  var TIMEOUT_IN_MS = 1000;
   window.uploadSuccess = false;
   window.downloadSuccess = false;
   window.load = {
@@ -19,6 +19,7 @@
           window.downloadSuccess = true;
         } else {
           onError('Статус ответа GET: ' + xhr.status + ' ' + xhr.statusText);
+          window.downloadSuccess = false;
         }
       });
       xhr.addEventListener('error', function () {
@@ -42,13 +43,12 @@
       xhr.responseType = 'json';
 
       xhr.addEventListener('load', function () {
-        console.log('xhr.status ' + xhr.status);
         if (xhr.status === StatusCode.OK) {
           onSuccess(xhr.response);
-          onError('Статус ответа POST: ' + xhr.status + ' ' + xhr.statusText);
           window.uploadSuccess = true;
         } else {
           onError('Статус ответа POST: ' + xhr.status + ' ' + xhr.statusText);
+          window.uploadSuccess = false;
         }
       });
       xhr.addEventListener('error', function () {

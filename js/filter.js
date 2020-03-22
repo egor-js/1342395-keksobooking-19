@@ -86,6 +86,16 @@
       for (var i = 0; i < housingFeaturesFieldset.elements.length; i++) {
         housingFeaturesFieldset.elements[i].checked = false;
       }
+    },
+    setFiltersActive: function () {
+      for (var i = 0; i < mapFiltersForm.length; i++) {
+        mapFiltersForm[i].removeAttribute('disabled', '');
+      }
+    },
+    setFiltersInactive: function () {
+      for (var i = 0; i < mapFiltersForm.length; i++) {
+        mapFiltersForm[i].setAttribute('disabled', '');
+      }
     }
   };
 })();

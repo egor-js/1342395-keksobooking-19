@@ -43,6 +43,7 @@
         }
         break;
       default:
+        console.error('Unknown case in select "rooms"');
     }
   });
 
@@ -79,6 +80,7 @@
         }
         break;
       default:
+        console.error('Unknown case in select "capacity"');
     }
   });
 })();
@@ -115,15 +117,19 @@
         form.price.setAttribute('placeholder', '10000');
         break;
       default:
+        console.error('Unknown case in select "type"');
     }
   });
-  // window.form = {
-  //   closeUploadMesage: function (parent, child) {
-  //     form.reset();
-  //     window.main.setPageInactive();
-  //     parent.removeChild(child);
-  //   }
-  // };
-})();
-(function () {
+  window.form = {
+    setFormActive: function () {
+      for (var i = 0; i < form.elements.length; i++) {
+        form.elements[i].removeAttribute('disabled', '');
+      }
+    },
+    setFormInactive: function () {
+      for (var i = 0; i < form.elements.length; i++) {
+        form.elements[i].setAttribute('disabled', '');
+      }
+    }
+  };
 })();
