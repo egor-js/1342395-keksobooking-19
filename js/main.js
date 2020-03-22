@@ -61,10 +61,10 @@
       }
       buttonStart.removeEventListener('mousedown', onActivateMap);
       buttonStart.removeEventListener('keydown', onActivateMap);
-      if (window.load.downloadSuccess) {
+      if (window.downloadSuccess) {
         window.pins.renderPins(window.dataPinsOriginal);
       } else {
-        console.log('window.load.downloadSuccess' + window.load.downloadSuccess);
+        console.log('window.downloadSuccess ' + window.downloadSuccess);
       }
 
       mapFiltersForm.addEventListener('input', function () {
@@ -82,16 +82,23 @@
         form.reset();
         window.scrollTo(0, 0);
       }
+      if (main.querySelector('.error')) {
+        main.removeChild(main.querySelector('.error'));
+      }
 
     }
   }
-  function onCloseUploadMessage() {
+  function onCloseSuccessUploadMessage() {
     map.removeChild(map.querySelector('.success'));
     window.main.setPageInactive();
     form.reset();
     window.scrollTo(0, 0);
-    successUploadMessage.removeEventListener('click', onCloseUploadMessage);
-    main.insertBefore(failUploadMessage, mainDiv);
+    successUploadMessage.removeEventListener('click', onCloseSuccessUploadMessage);
+  }
+
+  function onCloseFailUploadMessage() {
+    main.removeChild(main.querySelector('.error'));
+    successUploadMessage.removeEventListener('click', onCloseSuccessUploadMessage);
   }
 
   buttonStart.addEventListener('mousedown', onMovePin);
@@ -173,17 +180,18 @@
 
   function onSuccessDownload(response) {
     map.insertBefore(successUploadMessage, mapPins);
-    successUploadMessage.addEventListener('click', onCloseUploadMessage);
+    successUploadMessage.addEventListener('click', onCloseSuccessUploadMessage);
     console.log(response);
   }
-  function onFailDownload() {
+  function onFailDownload(message) {
     main.insertBefore(failUploadMessage, mainDiv);
-//  successUploadMessage.addEventListener('click', onCloseUploadMessage);
+    console.log(message);
+    failUploadMessage.addEventListener('click', onCloseFailUploadMessage);
   }
 
   form.addEventListener('submit', function (evt) {
-    window.load.upload(new FormData(form), onSuccessDownload, onFailDownload);
     evt.preventDefault();
+    window.load.upload(new FormData(form), onSuccessDownload, onFailDownload);
   });
 
 })();

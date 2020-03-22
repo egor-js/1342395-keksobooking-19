@@ -91,6 +91,7 @@
   form.title.setAttribute('required', '');
   form.price.setAttribute('required', '');
   form.price.setAttribute('max', '1000000');
+  form.price.setAttribute('min', '1000');
   form.capacity.selectedIndex = 2;
   form.avatar.setAttribute('accept', 'image/png, image/jpg, image/jpeg');
   form.images.setAttribute('accept', 'image/png, image/jpg, image/jpeg');
