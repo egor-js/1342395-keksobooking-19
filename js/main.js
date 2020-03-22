@@ -1,12 +1,12 @@
 'use strict';
 
 (function () {
-  var CORRECTION_RED_PIN_X = 32.5;
+  var CORRECTION_RED_PIN_X = 32.5; // красная метка выбора адреса для пользовательского объявления
   var CORRECTION_RED_PIN_Y = 80;
-  var CORRECTION_START_PIN_X = 32.5;
+  var CORRECTION_START_PIN_X = 32.5; // метка при неактивном режиме
   var CORRECTION_START_PIN_Y = 32.5;
-  var MAX_COORD_Y = 630;
-  var MIN_COORD_Y = 130;
+  var MAX_COORD_Y = 630 - CORRECTION_RED_PIN_Y;
+  var MIN_COORD_Y = 130 - CORRECTION_RED_PIN_Y;
   var main = document.querySelector('main');
   var mainDiv = main.querySelector('div');
   var map = document.querySelector('.map');
@@ -20,59 +20,60 @@
 
   window.main = {
     setPageInactive: function () {
-
       window.pins.removePins();
-      form.reset();
       window.scrollTo(0, 0);
       map.classList.add('map--faded');
       form.classList.add('ad-form--disabled');
       form.address.setAttribute('readonly', '');
+      form.address.value = addressX + ', ' + addressY;
+      form.address.setAttribute('placeholder', addressX + ', ' + addressY);
+      form.title.value = '';
+      form.description.value = '';
+      form.type.value = 'flat';
+      form.price.value = '';
+      form.timein.value = '12:00';
+      form.timeout.value = '12:00';
+      form.rooms.value = '1';
+      form.capacity.value = '1';
       buttonStart.style.top = '375px';
+      for (var i = 18; i < 24; i++) {
+        form.elements[i].checked = false;
+      }
       buttonStart.style.left = '570px';
+      buttonStart.setAttribute('tabindex', '0');
       addressX = buttonStart.getBoundingClientRect().x - mapPins.getBoundingClientRect().x + CORRECTION_START_PIN_X;
       addressY = buttonStart.getBoundingClientRect().y - mapPins.getBoundingClientRect().y + CORRECTION_START_PIN_Y;
-      form.address.value = addressX + ', ' + addressY;
-      buttonStart.setAttribute('tabindex', '0');
-      form.address.setAttribute('placeholder', addressX + ', ' + addressY);
+
       buttonStart.addEventListener('mousedown', onActivateMap);
       buttonStart.addEventListener('keydown', onActivateMap);
       window.form.setFormInactive();
       window.filter.setFiltersInactive();
-      // for (i = 0; i < filterForm.length; i++) {
-      //   filterForm[i].setAttribute('disabled', '');
-      // }
-
       window.filter.reset();
-      window.load.download(onSuccess, onError);
+      window.load.download(onSuccessDownload, onErrorDownload);
     }
   };
   window.main.setPageInactive();
-
   function onActivateMap(evt) {
     if (evt.button === 0 || evt.key === 'Enter') {
       document.querySelector('.map').classList.remove('map--faded');
       form.classList.remove('ad-form--disabled');
       form.address.value = addressX + ', ' + addressY;
-
-      // for (var i = 0; i < fieldsetList.length; i++) {
-      //   fieldsetList[i].removeAttribute('disabled', '');
-      // }
       window.form.setFormActive();
-      window.filter.setFiltersActive();
-      // for (i = 0; i < filterForm.length; i++) {
-      //   filterForm[i].removeAttribute('disabled', '');
-      // }
       buttonStart.removeEventListener('mousedown', onActivateMap);
       buttonStart.removeEventListener('keydown', onActivateMap);
       if (window.downloadSuccess) {
         window.pins.renderPins(window.dataPinsOriginal);
+        window.filter.setFiltersActive();
       }
-
       mapFiltersForm.addEventListener('input', function () {
         window.card.close();
         window.data.debounce(window.pins.renderPins(window.filter.all(window.dataPinsOriginal)));
       });
-      resetButton.addEventListener('click', window.main.setPageInactive);
+      resetButton.addEventListener('click', function (evtRes) {
+        window.card.close();
+        evtRes.preventDefault();
+        window.main.setPageInactive();
+      });
     }
   }
   function onCloseCardByEscape(evt) {
@@ -81,21 +82,16 @@
       if (map.querySelector('.success')) {
         map.removeChild(map.querySelector('.success'));
         window.main.setPageInactive();
-        form.reset();
         window.scrollTo(0, 0);
       }
       if (main.querySelector('.error')) {
         main.removeChild(main.querySelector('.error'));
       }
-
     }
   }
-
-
   buttonStart.addEventListener('mousedown', onMovePin);
   document.addEventListener('click', window.card.renderCard);
   document.addEventListener('keydown', onCloseCardByEscape);
-
   function onMovePin(evt) {
     evt.preventDefault();
     if (evt.button === 0) {
@@ -144,15 +140,14 @@
     document.addEventListener('mousemove', onMouseMove);
     document.addEventListener('mouseup', onMouseUp);
   }
-
-  function onSuccess(pins) {
+  function onSuccessDownload(pins) {
     for (var i = 0; i < pins.length; i++) {
       pins[i].id = i;
     }
     window.dataPinsOriginal = pins;
   }
 
-  function onError(errorMessage) {
+  function onErrorDownload(errorMessage) {
     var node = document.createElement('div');
     node.style = 'z-index: 100; margin: 0 auto; text-align: center; background-color: red;';
     node.style.position = 'absolute';
@@ -161,45 +156,44 @@
     node.style.fontSize = '30px';
     node.textContent = errorMessage;
     document.body.insertAdjacentElement('afterbegin', node);
+    window.setTimeout(function () {
+      try {
+        window.load.download(onSuccessDownload, onErrorDownload);
+        window.filter.setFiltersActive();
+      } catch (e) {
+        console.warn('Данные с сервера не загружены! Проверьте свой интернет.');
+      }
+    }, 3000);
   }
-
   function onCloseSuccessUploadMessage() {
-    map.removeChild(map.querySelector('.success'));
+    main.removeChild(main.querySelector('.success'));
     window.main.setPageInactive();
-    // form.reset();
     window.scrollTo(0, 0);
     successUploadMessage.removeEventListener('click', onCloseSuccessUploadMessage);
   }
-
   function onCloseFailUploadMessage() {
     main.removeChild(main.querySelector('.error'));
     successUploadMessage.removeEventListener('click', onCloseSuccessUploadMessage);
   }
-
   var successUploadMessage = document.querySelector('#success').content.querySelector('.success');
   var failUploadMessage = document.querySelector('#error').content.querySelector('.error');
-
   function onRetryUpload() {
     window.load.upload(new FormData(form), onSuccessUpload, onFailUpload);
     removeEventListener('click', onRetryUpload);
   }
-
-  function onSuccessUpload(response) {
-    map.insertBefore(successUploadMessage, mapPins);
+  function onSuccessUpload() {
+    main.insertBefore(successUploadMessage, mainDiv);
     successUploadMessage.addEventListener('click', onCloseSuccessUploadMessage);
-    // console.log(response);
   }
-  function onFailUpload(message) {
+  function onFailUpload() {
     main.insertBefore(failUploadMessage, mainDiv);
     var errorButton = main.querySelector('.error__button');
-    console.log(message);
     errorButton.addEventListener('click', onRetryUpload);
     failUploadMessage.addEventListener('click', onCloseFailUploadMessage);
   }
-
   form.addEventListener('submit', function (evt) {
     evt.preventDefault();
+    window.card.close();
     window.load.upload(new FormData(form), onSuccessUpload, onFailUpload);
   });
-
 })();

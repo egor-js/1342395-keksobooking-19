@@ -3,8 +3,8 @@
 (function () {
   var pinTemplate = document.querySelector('#pin').content.querySelector('button');
   var mapPins = document.querySelector('.map__pins');
-  var CORRECTION_PIN_X = 25; // смещение по X от точки вставки тега "button" до середины картинки
-  var CORRECTION_PIN_Y = 70; // смещение по Y от точки вставки тега "button" до хвостика внизу картинки
+  var CORRECTION_PIN_X = 25; // смещение по X от точки вставки "button" до середины картинки
+  var CORRECTION_PIN_Y = 70; // смещение по Y от точки вставки "button" до хвостика внизу картинки
   window.pins = {
     removePins: function () {
       var k = mapPins.childNodes.length;

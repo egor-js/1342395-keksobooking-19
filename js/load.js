@@ -6,7 +6,7 @@
   var StatusCode = {
     OK: 200
   };
-  var TIMEOUT_IN_MS = 1000;
+  var TIMEOUT_IN_MS = 3000;
   window.uploadSuccess = false;
   window.downloadSuccess = false;
   window.load = {
@@ -64,7 +64,6 @@
       try {
         xhr.send(data);
       } catch (e) {
-        console.log(e);
         onError('При отправке запроса POST возникла ошибка ' + e);
       }
     }
