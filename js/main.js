@@ -79,8 +79,8 @@
   function onCloseCardByEscape(evt) {
     if (evt.key === 'Escape') {
       window.card.close();
-      if (map.querySelector('.success')) {
-        map.removeChild(map.querySelector('.success'));
+      if (main.querySelector('.success')) {
+        main.removeChild(main.querySelector('.success'));
         window.main.setPageInactive();
         window.scrollTo(0, 0);
       }
