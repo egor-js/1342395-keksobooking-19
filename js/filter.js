@@ -73,8 +73,29 @@
         if (result) {
           pinsFiltred.push(pins[i]);
         }
+        if (pinsFiltred.length === 5) {
+          break;
+        }
       }
       return pinsFiltred;
     },
+    reset: function () {
+      for (var i = 0; i < 4; i++) {
+        mapFiltersForm.elements[i].value = 'any';
+      }
+      for (var i = 0; i < housingFeaturesFieldset.elements.length; i++) {
+        housingFeaturesFieldset.elements[i].checked = false;
+      }
+    },
+    setFiltersActive: function () {
+      for (var i = 0; i < mapFiltersForm.length; i++) {
+        mapFiltersForm[i].removeAttribute('disabled', '');
+      }
+    },
+    setFiltersInactive: function () {
+      for (var i = 0; i < mapFiltersForm.length; i++) {
+        mapFiltersForm[i].setAttribute('disabled', '');
+      }
+    }
   };
 })();

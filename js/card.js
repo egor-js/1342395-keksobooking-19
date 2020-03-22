@@ -13,7 +13,6 @@
         document.querySelector('.map__pin--active').classList.remove('map__pin--active');
       }
     },
-
     renderCard: function (evt) {
       var pinCards = document.createDocumentFragment();
       var pinId = evt.target.getAttribute('id');

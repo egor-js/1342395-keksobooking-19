@@ -10,15 +10,6 @@
     var target = evt.target;
     form.timein.value = target.value;
   });
-
-  // function eventHandler(evt) {
-  //   var target = evt.target;
-  //   this.value = target.value;
-  // }
-  //
-  // form.timein.addEventListener('input', eventHandler);
-  // form.timeout.addEventListener('input', eventHandler);
-
   form.room_number.addEventListener('input', function (evt) {
     form.capacity.setCustomValidity('');
     var target = evt.target;
@@ -52,6 +43,7 @@
         }
         break;
       default:
+        console.error('Unknown case in select "rooms"');
     }
   });
 
@@ -88,6 +80,7 @@
         }
         break;
       default:
+        console.error('Unknown case in select "capacity"');
     }
   });
 })();
@@ -100,6 +93,7 @@
   form.title.setAttribute('required', '');
   form.price.setAttribute('required', '');
   form.price.setAttribute('max', '1000000');
+  form.price.setAttribute('min', '1000');
   form.capacity.selectedIndex = 2;
   form.avatar.setAttribute('accept', 'image/png, image/jpg, image/jpeg');
   form.images.setAttribute('accept', 'image/png, image/jpg, image/jpeg');
@@ -123,6 +117,19 @@
         form.price.setAttribute('placeholder', '10000');
         break;
       default:
+        console.error('Unknown case in select "type"');
     }
   });
+  window.form = {
+    setFormActive: function () {
+      for (var i = 0; i < form.elements.length; i++) {
+        form.elements[i].removeAttribute('disabled', '');
+      }
+    },
+    setFormInactive: function () {
+      for (var i = 0; i < form.elements.length; i++) {
+        form.elements[i].setAttribute('disabled', '');
+      }
+    }
+  };
 })();
