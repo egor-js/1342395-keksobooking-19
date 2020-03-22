@@ -61,12 +61,12 @@
           filters.push(mapFiltersForm.elements[i].name);
         }
       }
-      for (var i = 0; i < housingFeaturesFieldset.elements.length; i++) {
+      for (i = 0; i < housingFeaturesFieldset.elements.length; i++) {
         if (housingFeaturesFieldset.elements[i].checked) {
           filters.push(housingFeaturesFieldset.elements[i].value);
         }
       }
-      for (var i = 0; i < pins.length; i++) {
+      for (i = 0; i < pins.length; i++) {
         var result = filters.every(function (filter) {
           return window.filterFunc[filter](pins[i]);
         });
@@ -83,7 +83,7 @@
       for (var i = 0; i < 4; i++) {
         mapFiltersForm.elements[i].value = 'any';
       }
-      for (var i = 0; i < housingFeaturesFieldset.elements.length; i++) {
+      for (i = 0; i < housingFeaturesFieldset.elements.length; i++) {
         housingFeaturesFieldset.elements[i].checked = false;
       }
     },

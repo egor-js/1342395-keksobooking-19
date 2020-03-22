@@ -161,7 +161,7 @@
         window.load.download(onSuccessDownload, onErrorDownload);
         window.filter.setFiltersActive();
       } catch (e) {
-        console.warn('Данные с сервера не загружены! Проверьте свой интернет.');
+        onErrorDownload('Данные с сервера не загружены! Ошибка: ' + e.message);
       }
     }, 3000);
   }

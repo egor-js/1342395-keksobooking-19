@@ -43,7 +43,6 @@
         }
         break;
       default:
-        console.error('Unknown case in select "rooms"');
     }
   });
 
@@ -80,7 +79,6 @@
         }
         break;
       default:
-        console.error('Unknown case in select "capacity"');
     }
   });
 })();
@@ -117,7 +115,6 @@
         form.price.setAttribute('placeholder', '10000');
         break;
       default:
-        console.error('Unknown case in select "type"');
     }
   });
   window.form = {
